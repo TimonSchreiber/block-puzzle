@@ -71,7 +71,10 @@ export function getValidMoves(state) {
   return Object.keys(state.blocks)
     .flatMap((blockId) =>
         directions.map((direction) => ({ blockId, direction }))
-    ).filter((obj) => canMove(state, obj.blockId, obj.direction));
+    )
+    .filter((obj) =>
+      canMove(state, obj.blockId, obj.direction)
+  );
 }
 
 /**

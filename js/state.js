@@ -45,9 +45,22 @@ export function applyMove(state, blockId, direction) {
 
 export function stateKey(state) {
   // TODO: Generate a string representation of the board configuration => FEN style
+  return Object.values(state.blocks)
+    .map((block) => {
+      const sortedCells = [...block.cells]
+        .sort((a, b) => a[0] - b[0] || a[1] - b[1])
+        .map(cellToString)
+        .join(';');
+      // TODO: is this necessary or can I assume the dirs are always the same order?
+      const sortedDirs = block.dirs.map((dir) => dir[0]).sort().join(',');
+      const isMain = block.isMain ? 1 : 0;
+      return `${sortedCells}:${sortedDirs}:${isMain}`;
+    })
+    .sort()
+    .join('|');
 }
 
-/** TODO: needed? */
+/** TODO: needed? Move somewhere else? */
 export function reverseDirection(direction) {
   return {
     up: 'down',

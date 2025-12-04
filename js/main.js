@@ -1,6 +1,6 @@
 
 import { canMove, getValidMoves, isWon, occupiedCells } from './rules.js';
-import { createState } from './state.js';
+import { createState, stateKey } from './state.js';
 
 // test level loading
 const response = await fetch('./js/levels.json');
@@ -12,6 +12,8 @@ const level0 = rushHour.levels[0];
 const state = createState(rushHour, level0);
 console.log('Initial state', state);
 
+console.log('StateKey', stateKey(state));
+
 // test occupiedCells
 console.log('Occupied cells', occupiedCells(state));
 
@@ -21,15 +23,13 @@ console.log('C3 left', canMove(state, 'C3', 'left'));
 console.log('C3 down', canMove(state, 'C3', 'down'));
 
 // test getValidMoves
-const validMoves = getValidMoves(state);
-console.log('Valid moves:', validMoves)
+console.log('Valid moves:', getValidMoves(state))
 
 // test win condition
-const won = isWon({
-  winCondition: [[0, 0]],
-  blocks: {
-    A: { cells: [[0, 0]], isMain: true },
-    B: { cells: [[1, 1]], isMain: false }
-  }
-});
-console.log('is Won:', won);
+console.log('is Won:', isWon({
+    winCondition: [[0, 0], [0,1]],
+    blocks: {
+      A: { cells: [[0, 0]], isMain: true },
+      B: { cells: [[1, 1]], isMain: false }
+    }
+  }));
