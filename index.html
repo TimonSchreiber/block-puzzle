@@ -6,6 +6,30 @@
 </head>
 
 <body>
-  <h1>Puzzle Solver</h1>
+  <h1>Block Puzzle</h1>
+  <h2>Check the console</h2>
+
+  <script type="module">
+    import { createState } from './js/state.js';
+    import { isWon } from './js/rules.js';
+
+    const response = await fetch('./js/levels.json');
+    const games = await response.json();
+
+    const rushHour = games.rushHour;
+    const level0 = rushHour.levels[0];
+
+    const state = createState(rushHour, level0);
+    console.log('Initial state', state);
+
+    const won = isWon({
+      winCondition: [[0, 0]],
+      blocks: {
+        A: { cells: [[0, 0]], isMain: true },
+        B: { cells: [[1, 1]], isMain: false }
+      }
+    });
+    console.log('is Won:', won);
+  </script>
 
 </body>
