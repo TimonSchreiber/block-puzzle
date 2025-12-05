@@ -43,8 +43,12 @@ export function applyMove(state, blockId, direction) {
   };
 }
 
+/**
+ * TODO:
+ * @param {*} state
+ * @returns
+ */
 export function stateKey(state) {
-  // TODO: Generate a string representation of the board configuration => FEN style
   return Object.values(state.blocks)
     .map((block) => {
       const sortedCells = [...block.cells]

@@ -1,4 +1,4 @@
-
+import { createRenderer } from './renderer.js';
 import { canMove, getValidMoves, isWon, occupiedCells } from './rules.js';
 import { createState, stateKey } from './state.js';
 
@@ -6,10 +6,12 @@ import { createState, stateKey } from './state.js';
 const response = await fetch('./js/levels.json');
 const games = await response.json();
 
-const rushHour = games.rushHour;
-const level0 = rushHour.levels[0];
+// const game = games.rushHour;
+// const game = games.dirtyDozen;
+const game = games.jumpingRabbits;
+const level = game.levels[0];
 
-const state = createState(rushHour, level0);
+const state = createState(game, level);
 console.log('Initial state', state);
 
 console.log('StateKey', stateKey(state));
@@ -18,9 +20,9 @@ console.log('StateKey', stateKey(state));
 console.log('Occupied cells', occupiedCells(state));
 
 // test canMove
-console.log('C3 right', canMove(state, 'C3', 'right'));
-console.log('C3 left', canMove(state, 'C3', 'left'));
-console.log('C3 down', canMove(state, 'C3', 'down'));
+// console.log('C3 right', canMove(state, 'C3', 'right'));
+// console.log('C3 left', canMove(state, 'C3', 'left'));
+// console.log('C3 down', canMove(state, 'C3', 'down'));
 
 // test getValidMoves
 console.log('Valid moves:', getValidMoves(state))
@@ -32,4 +34,9 @@ console.log('is Won:', isWon({
       A: { cells: [[0, 0]], isMain: true },
       B: { cells: [[1, 1]], isMain: false }
     }
-  }));
+  })
+);
+
+const svg = document.querySelector('svg');
+const renderer = createRenderer(svg);
+renderer.render(state);

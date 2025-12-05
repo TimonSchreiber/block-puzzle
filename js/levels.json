@@ -6,7 +6,100 @@
     "width": 6,
     "height": 5,
     "winCondition": [[4, 0], [5, 0], [4, 1], [5, 1]],
-    "levels": []
+    "color-theme": ["#d3d3d3", "#ffffff", "#ff0000"],
+    "levels": [
+      {
+        "id": 0,
+        "name": "Game 0",
+        "optimalMoves": 13,
+        "blocks": {
+          "R1": {
+            "cells": [[4, 1], [5, 1], [4, 2], [5, 2]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#ff0000"
+          },
+          "Y1": {
+            "cells": [[0, 0], [1, 0], [1, 1]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#ffff00"
+          },
+          "Y2": {
+            "cells": [[0, 1], [0, 2], [1, 2]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#b2b200"
+          },
+          "Y3": {
+            "cells": [[0, 3], [0, 4], [1, 4]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#7c7c00"
+          },
+          "Y4": {
+            "cells": [[1, 3], [2, 3], [2, 4]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#565600"
+          },
+          "B1": {
+            "cells": [[4, 0], [5, 0]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#0000ff"
+          },
+          "B2": {
+            "cells": [[3, 3], [3, 4]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#0000b2"
+          },
+          "B3": {
+            "cells": [[4, 3], [4, 4]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#00007c"
+          },
+          "G1": {
+            "cells": [[2, 0]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#00ff00"
+          },
+          "G2": {
+            "cells": [[3, 0]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#00b200"
+          },
+          "G3": {
+            "cells": [[2, 1]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#007c00"
+          },
+          "G4": {
+            "cells": [[3, 1]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#005600"
+          },
+          "G5": {
+            "cells": [[2, 2]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#003c00"
+          },
+          "G6": {
+            "cells": [[3, 2]],
+            "isMain": false,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#002a00"
+          }
+        }
+      }
+    ]
   },
   "jumpingRabbits": {
     "name": "Jumping Rabbits",
@@ -14,8 +107,41 @@
     "reference": "https://www.smartgames.eu/de/spiele-f%C3%BCr-einen-spieler/so-h%C3%BCpft-der-hase",
     "width": 5,
     "height": 5,
-    "winCondition": [[0, 0], [0, 4], [2, 2], [4, 0], [4, 4]],
-    "levels": []
+    "winCondition": [[0, 0], [4, 0], [2, 2], [0, 4], [4, 4]],
+    "color-theme": ["#8b4513", "#00b200", "#cd853f"],
+    "levels": [
+      {
+        "id": 0,
+        "name": "Starter 1",
+        "optimalMoves": 2,
+        "blocks": {
+          "R1": {
+            "cells": [[3, 2]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#0000ff"
+          },
+          "M1": {
+            "cells": [[3, 3]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#ff0000"
+          },
+          "M2": {
+            "cells": [[2, 4]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#b20000"
+          },
+          "M3": {
+            "cells": [[1, 4]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#7c0000"
+          }
+        }
+      }
+    ]
   },
   "rushHour": {
     "name": "Rush Hour",
@@ -24,6 +150,7 @@
     "width": 6,
     "height": 6,
     "winCondition": [[4, 3], [5, 3]],
+    "color-theme": ["#d3d3d3", "#ffffff", "#ff0000"],
     "levels": [
       {
         "id": 0,

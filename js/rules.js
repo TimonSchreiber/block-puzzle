@@ -88,13 +88,7 @@ export function isWon(state) {
   const mainCells = new Set(mainBlocks.flatMap((block) => block.cells).map(cellToString));
   const winCells = new Set(state.winCondition.map(cellToString));
 
-  // TODO: check later how a win is defined:
-  // does every mainBlock need to occupy a win cell
-  // or does every win cell need to be occupied by a main block?
-  // if (mainCells.size !== winCells.size) {
-  //   return false;
-  // }
-
+  // All main blocks need to occupy a winCell
   for (const cell of mainCells) {
     if (!winCells.has(cell)) return false;
   }
