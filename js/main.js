@@ -1,28 +1,30 @@
 import { createRenderer } from './renderer.js';
 import { canMove, getValidMoves, isWon, occupiedCells } from './rules.js';
-import { createState, stateKey } from './state.js';
+import { solve } from './solver.js';
+import { applyMove, createState, stateKey } from './state.js';
 
 // test level loading
 const response = await fetch('./js/levels.json');
 const games = await response.json();
 
-// const game = games.rushHour;
-// const game = games.dirtyDozen;
-const game = games.jumpingRabbits;
+let game;
+game = games.jumpingRabbits;
+game = games.rushHour;
+game = games.dirtyDozen;
 const level = game.levels[0];
 
-const state = createState(game, level);
-console.log('Initial state', state);
+let state = createState(game, level);
+console.log('Initial state:', state);
 
-console.log('StateKey', stateKey(state));
+console.log('StateKey:', stateKey(state));
 
 // test occupiedCells
-console.log('Occupied cells', occupiedCells(state));
+console.log('Occupied cells:', occupiedCells(state));
 
 // test canMove
-// console.log('C3 right', canMove(state, 'C3', 'right'));
-// console.log('C3 left', canMove(state, 'C3', 'left'));
-// console.log('C3 down', canMove(state, 'C3', 'down'));
+console.log('R1 right:', canMove(state, 'R1', 'right'));
+console.log('R1 left:', canMove(state, 'R1', 'left'));
+console.log('R1 down:', canMove(state, 'R1', 'down'));
 
 // test getValidMoves
 console.log('Valid moves:', getValidMoves(state))
@@ -37,6 +39,30 @@ console.log('is Won:', isWon({
   })
 );
 
+// Test renderer
 const svg = document.querySelector('svg');
-const renderer = createRenderer(svg);
+const renderer = createRenderer(
+  svg, game.theme,
+  Object.fromEntries(
+    Object.entries(level.blocks)
+      .map(([blockId, block]) => [blockId, block.color])
+  )
+);
 renderer.render(state);
+
+// Test solve method
+const solution = solve(state);
+
+console.log(solution);
+
+for (const move of solution) {
+  renderer.render(state);
+  state = applyMove(state, move.blockId, move.direction);
+  await sleep(300);
+}
+
+renderer.render(state);
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
