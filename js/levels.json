@@ -6,7 +6,15 @@
     "width": 6,
     "height": 5,
     "winCondition": [[4, 0], [5, 0], [4, 1], [5, 1]],
-    "color-theme": ["#d3d3d3", "#ffffff", "#ff0000"],
+    "theme": {
+      "background": "#2c3e50",
+      "board": "#d3d3d3",
+      "grid": "#ffffff",
+      "winArea": "rgb(256 0 0 / 0.3)",
+      "winDisplay": "exit",
+      "exitSide": "right",
+      "exitRow": 0
+    },
     "levels": [
       {
         "id": 0,
@@ -108,7 +116,13 @@
     "width": 5,
     "height": 5,
     "winCondition": [[0, 0], [4, 0], [2, 2], [0, 4], [4, 4]],
-    "color-theme": ["#8b4513", "#00b200", "#cd853f"],
+    "theme": {
+      "background": "#2d5a27",
+      "board": "#8b4513",
+      "grid": "#00b200",
+      "winArea": "rgb(205 133 63 / 0.65)",
+      "winDisplay": "cells"
+    },
     "levels": [
       {
         "id": 0,
@@ -123,19 +137,19 @@
           },
           "M1": {
             "cells": [[3, 3]],
-            "isMain": true,
+            "isMain": false,
             "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "M2": {
             "cells": [[2, 4]],
-            "isMain": true,
+            "isMain": false,
             "dirs": ["up", "down", "left", "right"],
             "color": "#b20000"
           },
           "M3": {
             "cells": [[1, 4]],
-            "isMain": true,
+            "isMain": false,
             "dirs": ["up", "down", "left", "right"],
             "color": "#7c0000"
           }
@@ -150,7 +164,15 @@
     "width": 6,
     "height": 6,
     "winCondition": [[4, 3], [5, 3]],
-    "color-theme": ["#d3d3d3", "#ffffff", "#ff0000"],
+    "theme": {
+      "background": "#34495e",
+      "board": "#d3d3d3",
+      "grid": "#ffffff",
+      "winArea": "rgb(256 0 0 / 0.25)",
+      "winDisplay": "exit",
+      "exitSide": "right",
+      "exitRow": 3
+    },
     "levels": [
       {
         "id": 0,
