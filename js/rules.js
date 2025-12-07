@@ -2,8 +2,8 @@ import { cellToString, DELTAS } from "./state.js";
 
 /**
  * Returns a Set of all the occupied coordinates as Strings.
- * @param {*} state
- * @returns
+ * @param {Object} state
+ * @returns {Set<string>}
  */
 export function occupiedCells(state) {
   return new Set(
@@ -21,12 +21,14 @@ export function inBounds(state, x, y) {
       && y < state.height;
 }
 
+// TODO: Important! Add alternative functions for different types of moves (sliding vs jumping vs ...)
+
 
 /**
  * Check if this block can move in the specified direction.
- * @param {*} state The state of the board.
- * @param {*} blockId The id of the block to check.
- * @param {*} direction The direction to check.
+ * @param {Object} state The state of the board.
+ * @param {string} blockId The id of the block to check.
+ * @param {string} direction The direction to check.
  * @returns True if the specified block can move towards the specified
  *          direction, False otherwise.
  */
@@ -63,8 +65,8 @@ export function canMove(state, blockId, direction) {
 
 /**
  * Returns an Array of all moves possible in this board state.
- * @param {*} state
- * @returns
+ * @param {Object} state
+ * @returns {Array} A List of valid moves
  */
 export function getValidMoves(state) {
   const directions = Object.keys(DELTAS);
@@ -79,7 +81,7 @@ export function getValidMoves(state) {
 
 /**
  * Checks if the win condition is met.
- * @param {*} state The state of the board.
+ * @param {Object} state The state of the board.
  * @returns True if all winning
  */
 export function isWon(state) {

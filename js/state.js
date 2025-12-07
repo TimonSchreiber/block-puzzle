@@ -16,7 +16,16 @@ export function createState(gameType, level) {
     width: gameType.width,
     height: gameType.height,
     winCondition: gameType.winCondition,
-    blocks: structuredClone(level.blocks),
+    blocks: Object.fromEntries(
+      Object.entries(level.blocks).map(([blockId, block]) => [
+        blockId,
+        {
+          cells: structuredClone(block.cells),
+          isMain: block.isMain,
+          dirs: block.dirs
+        }
+      ])
+    )
   };
 }
 

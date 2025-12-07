@@ -1,6 +1,6 @@
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-export function createRenderer(svg) {
+export function createRenderer(svg, theme, blockColors) {
   const cellSize = 10;
   const padding = 5;
   const blockMargin = 1;
@@ -9,63 +9,95 @@ export function createRenderer(svg) {
   let isInitialized = false;
 
   function initialize(state) {
-    const width = state.width * cellSize + 2 * padding;
-    const height = state.height * cellSize + 2 * padding;
+    const boardWidth = state.width * cellSize + 2 * padding;
+    const boardHeight = state.height * cellSize + 2 * padding;
 
-    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.setAttribute('viewBox', `0 0 ${boardWidth} ${boardHeight}`);
+    svg.style.background = theme.background;
     svg.innerHtml = '';
 
-    const gridGroup = createGroup('grid-layer');
-    const winGroup = createGroup('win-layer');
-    const blocksGroup = createGroup('blocks-layer');
-    svg.append(gridGroup, winGroup, blocksGroup)
+    const gridLayer = createGroup('grid-layer'); // TODO: needed?
+    const winLayer = createGroup('win-layer');
+    const blocksLayer = createGroup('blocks-layer');
+    svg.append(gridLayer, winLayer, blocksLayer)
 
-    const background = createRect(
-      padding, padding,
-      state.width * cellSize, state.height * cellSize,
-      { fill: 'lightgrey' }
-    );
-    gridGroup.append(background);
-
-    drawGrid(gridGroup, state);
-    drawWinArea(winGroup, state);
+    drawBoard(gridLayer, state);
+    drawWinArea(winLayer, state);
 
     isInitialized = true;
   }
 
-  function drawGrid(parent, state) {
-    const gridColor = 'grey';
+  function drawBoard(parent, state) {
+    const boardBackground = createRect(
+      padding, padding,
+      state.width * cellSize, state.height * cellSize,
+      { fill: theme.board }
+    );
+    parent.append(boardBackground);
 
-    for (let x = 0; x <= state.width; x++) {
-      const line = createLine(
-        padding + x * cellSize, padding,
-        padding + x * cellSize, padding + state.height * cellSize,
-        { stroke: gridColor, 'stroke-width': 1 }
-      );
-      parent.append(line);
-    }
+    // TODO: is the grid needed?
+    // for (let x = 0; x <= state.width; x++) {
+    //   const line = createLine(
+    //     padding + x * cellSize, padding,
+    //     padding + x * cellSize, padding + state.height * cellSize,
+    //     { stroke: theme.board, 'stroke-width': 1 }
+    //   );
+    //   parent.append(line);
+    // }
 
-    for (let y = 0; y <= state.height; y++) {
-      const line = createLine(
-        padding, padding + y * cellSize,
-        padding + state.width * cellSize, padding + y * cellSize,
-        { stroke: gridColor, 'stroke-width': 1 }
-      );
-      parent.append(line);
-    }
+    // for (let y = 0; y <= state.height; y++) {
+    //   const line = createLine(
+    //     padding, padding + y * cellSize,
+    //     padding + state.width * cellSize, padding + y * cellSize,
+    //     { stroke: theme.board, 'stroke-width': 1 }
+    //   );
+    //   parent.append(line);
+    // }
   }
 
   function drawWinArea(parent, state) {
-    // TODO: maybe only draw the outline and not filled
-    state.winCondition.forEach(([x, y]) => {
-      const { px, py } = gameToSvg(state, x, y);
-      const rect = createRect(
-        px, py,
-        cellSize, cellSize,
-        { fill: 'red', opacity: 0.25 }
-      );
-      parent.append(rect);
-    });
+    switch (theme.winDisplay) {
+      case 'exit':
+      case 'cells':
+        state.winCondition.forEach(([x, y]) => {
+          const { px, py } = gameToSvg(state, x, y);
+          const rect = createRect(
+            // TODO: subtarcted and added blockmargin temporarily to make it visible: find a better solution!
+            px - blockMargin, py - blockMargin,
+            cellSize + 2 * blockMargin, cellSize + 2 * blockMargin,
+            { fill: theme.winArea, opacity: 0.25, class: 'win-cell' }
+          );
+          parent.append(rect);
+        });
+        break;
+      // case 'exit':
+      // FIXME: check px, py, width, and height
+      //   const exitY = theme.exitRow;
+      //   const { px, py } = gameToSvg(state, 0, exitY);
+      //   // TODO: Add exitCOlumn to the json file?
+      //   // if (theme.exitSides.includes('down')) {
+      //   //   const rect = createRect(
+      //   //     py + 10, // FIXME: ???
+      //   //     padding + state.height * cellSize - 2,
+      //   //     cellSize - 20, // FIXME: ???
+      //   //     padding,
+      //   //     { fill: theme.winArea }
+      //   //   );
+      //   //   parent.append(rect);
+      //   // }
+      //   if (theme.exitSide == 'right') {
+      //     const rect = createRect(
+      //       padding + state.width * cellSize - 2,
+      //       py + 10, // FIXME: ???
+      //       padding,
+      //       cellSize, //- 20, // FIXME: ???
+      //       { fill: theme.winArea }
+      //     );
+      //     parent.append(rect);
+      //   }
+      //   // TODO: add all directions??
+      //   break;
+    }
   }
 
   function render(state) {
@@ -73,15 +105,16 @@ export function createRenderer(svg) {
       initialize(state);
     }
 
-    const blocksGroup = svg.querySelector('.blocks-layer');
-
-    blocksGroup.innerHtml = '';
-    blockElements = {};
+    const blocksLayer = svg.querySelector('.blocks-layer');
 
     Object.entries(state.blocks).forEach(([blockId, block]) => {
-      const element = createBlockElement(state, blockId, block);
-      blocksGroup.append(element);
-      blockElements[blockId] = element;
+      if (blockElements[blockId]) {
+        updateBlockPosition(state, blockId, block);
+      } else {
+        const { group, cells } = createBlockElement(state, blockId, block);
+        blocksLayer.append(group);
+        blockElements[blockId] = cells;
+      }
     });
   }
 
@@ -89,25 +122,40 @@ export function createRenderer(svg) {
     const group = createGroup(`block-${blockId}`);
     group.setAttribute('data-block-id', blockId); // TODO: add attributes to createGroup function?
 
-    const bounds = getBlockBounds(block.cells);
-    const { px, py } = gameToSvg(state, bounds.minX, bounds.maxY);
-    const width = (bounds.maxX - bounds.minX + 1) * cellSize;
-    const height = (bounds.maxY - bounds.minY + 1) * cellSize;
+    const color = blockColors[blockId];
+    const cellRects = [];
 
-    const rect = createRect(
-      px + blockMargin,
-      py + blockMargin,
-      width - 2 * blockMargin,
-      height - 2 * blockMargin,
-      {
-        fill: block.color,
-        class: 'block-rect',
-      }
-    );
+    block.cells.forEach(([x, y]) => {
+      const { px, py } = gameToSvg(state, x, y);
 
-    group.append(rect);
+      const rect = createRect(
+        // TODO: check coordinates and margin
+        px,// + blockMargin,
+        py,// + blockMargin,
+        cellSize,// - 2 * blockMargin,
+        cellSize,// - 2 * blockMargin,
+        {
+          fill: color,
+          class: 'block-cell',
+        }
+      );
+      cellRects.push(rect);
+      group.append(rect);
+    });
 
-    return group;
+    return { group, cells: cellRects };
+  }
+
+  function updateBlockPosition(state, blockId, block) {
+    const element = blockElements[blockId];
+
+
+    block.cells.forEach(([x, y], index) => {
+      const rect = element[index];
+      const {px, py } = gameToSvg(state, x, y);
+      rect.setAttribute('x', px /* + blockMargin */); // TODO: removed margin
+      rect.setAttribute('y', py /* + blockMargin */);
+    });
   }
 
   function gameToSvg(state, gameX, gameY) {
@@ -117,6 +165,7 @@ export function createRenderer(svg) {
     };
   }
 
+  // TODO: needed?
   function svgToGame(state, svgX, svgY) {
     return {
       x: Math.floor((svgX - padding) / cellSize),
@@ -124,25 +173,9 @@ export function createRenderer(svg) {
     };
   }
 
-  function getBlockBounds(cells) {
-    let minX = Infinity, minY = Infinity;
-    let maxX = -Infinity, maxY = -Infinity;
-
-    cells.forEach(([x, y]) => {
-      minX = Math.min(minX, x);
-      minY = Math.min(minY, y);
-      maxX = Math.max(maxX, x);
-      maxY = Math.max(maxY, y);
-    });
-
-    return { minX, minY, maxX, maxY };
-  }
-
   function createGroup(classname) {
     const g = document.createElementNS(SVG_NS, 'g');
-    if (classname) {
-      g.setAttribute('class', classname);
-    }
+    g.setAttribute('class', classname);
     return g;
   }
 
@@ -159,6 +192,7 @@ export function createRenderer(svg) {
     return rect;
   }
 
+  // TODO: no longer needed?
   function createLine(x1, y1, x2, y2, attr = {}) {
     const line = document.createElementNS(SVG_NS, 'line');
     line.setAttribute('x1', x1);
@@ -172,8 +206,5 @@ export function createRenderer(svg) {
     return line;
   }
 
-  return {
-    render,
-    svgToGame
-  };
+  return { render };
 }
