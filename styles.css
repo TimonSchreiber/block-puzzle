@@ -3,6 +3,19 @@ body {
 }
 
 svg {
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
+}
+
+.block-cell {
+    transition: x 0.15s ease-out, y 0.15s ease-out;
+}
+
+.win-cell {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
 }
