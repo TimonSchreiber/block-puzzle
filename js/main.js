@@ -8,17 +8,17 @@ const response = await fetch('../levels.json');
 const games = await response.json();
 
 let game;
-game = games.jumpingRabbits;
 game = games.rushHour;
 game = games.dirtyDozen;
+game = games.jumpingRabbits;
 
-const level = game.levels[12];
+const level = game.levels[5];
 const showSolution = false;
 
 let state = createState(game, level);
 // console.log('Initial state:', state);
 
-// console.log('StateKey:', stateKey(state));
+console.log('StateKey:', stateKey(state));
 
 // test occupiedCells
 // console.log('Occupied cells:', occupiedCells(state));

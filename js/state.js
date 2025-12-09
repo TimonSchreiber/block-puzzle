@@ -64,9 +64,9 @@ export function stateKey(state) {
         .sort((a, b) => a[0] - b[0] || a[1] - b[1])
         .map(cellToString)
         .join(';');
-      // TODO: is this necessary or can I assume the dirs are always the same order?
-      const sortedDirs = block.dirs.map((dir) => dir[0]).sort().join(',');
-      const isMain = block.isMain ? 1 : 0;
+      // TODO: is it necessary to sort or can I assume the dirs are always the same order?
+      const sortedDirs = block.dirs.map((dir) => dir[0])/* .sort() */.join(',');
+      const isMain = block.isMain ? 1 : '';
       return `${sortedCells}:${sortedDirs}:${isMain}`;
     })
     .sort()

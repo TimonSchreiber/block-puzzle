@@ -1230,19 +1230,252 @@
           "M1": {
             "cells": [[3, 3]],
             "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
+            "dirs": [],
             "color": "#ff0000"
           },
           "M2": {
+            "cells": [[1, 4]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#b20000"
+          },
+          "M3": {
             "cells": [[2, 4]],
             "isMain": false,
+            "dirs": [],
+            "color": "#7c0000"
+          }
+        }
+      },
+      {
+        "id": 1,
+        "name": "Junior 13",
+        "optimalMoves": 4,
+        "blocks": {
+          "R1": {
+            "cells": [[2, 3]],
+            "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "color": "#0000ff"
+          },
+          "F1": {
+            "cells": [[3, 3], [4, 3]],
+            "isMain": false,
+            "dirs": ["left", "right"],
+            "color": "#ffc800"
+          },
+          "M1": {
+            "cells": [[2, 2]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#ff0000"
+          },
+          "M2": {
+            "cells": [[1, 3]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#b20000"
+          },
+          "M3": {
+            "cells": [[3, 4]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#7c0000"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "name": "Expert 13",
+        "optimalMoves": 35,
+        "blocks": {
+          "R1": {
+            "cells": [[0, 1]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#0000ff"
+          },
+          "R2": {
+            "cells": [[3, 1]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#c0c0c0"
+          },
+          "F1": {
+            "cells": [[1, 3], [1, 4]],
+            "isMain": false,
+            "dirs": ["up", "down"],
+            "color": "#ffc800"
+          },
+          "F2": {
+            "cells": [[3, 3], [3, 4]],
+            "isMain": false,
+            "dirs": ["up", "down"],
+            "color": "#ff8c00"
+          },
+          "M1": {
+            "cells": [[4, 0]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#ff0000"
+          },
+          "M2": {
+            "cells": [[4, 2]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#b20000"
+          },
+          "M3": {
+            "cells": [[4, 3]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#7c0000"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "name": "Master 57",
+        "optimalMoves": 21,
+        "blocks": {
+          "R1": {
+            "cells": [[2, 0]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#0000ff"
+          },
+          "F1": {
+            "cells": [[0, 1], [1, 1]],
+            "isMain": false,
+            "dirs": ["left", "right"],
+            "color": "#ffc800"
+          },
+          "F2": {
+            "cells": [[1, 3], [1, 4]],
+            "isMain": false,
+            "dirs": ["up", "down"],
+            "color": "#ff8c00"
+          },
+          "M1": {
+            "cells": [[0, 0]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#ff0000"
+          },
+          "M2": {
+            "cells": [[2, 2]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#b20000"
+          },
+          "M3": {
+            "cells": [[0, 3]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#7c0000"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "name": "Wizard 79",
+        "optimalMoves": 36,
+        "blocks": {
+          "R1": {
+            "cells": [[3, 0]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#0000ff"
+          },
+          "R2": {
+            "cells": [[3, 3]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#c0c0c0"
+          },
+          "R3": {
+            "cells": [[4, 4]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#00ffff"
+          },
+          "F1": {
+            "cells": [[1, 1], [1, 2]],
+            "isMain": false,
+            "dirs": ["up", "down"],
+            "color": "#ff8c00"
+          },
+          "F2": {
+            "cells": [[0, 3], [1, 3]],
+            "isMain": false,
+            "dirs": ["left", "right"],
+            "color": "#ffc800"
+          },
+          "M1": {
+            "cells": [[4, 0]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#ff0000"
+          },
+          "M2": {
+            "cells": [[2, 2]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#b20000"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "name": "Wizard 100",
+        "optimalMoves": 77,
+        "blocks": {
+          "R1": {
+            "cells": [[1, 0]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#0000ff"
+          },
+          "R2": {
+            "cells": [[0, 2]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#c0c0c0"
+          },
+          "R3": {
+            "cells": [[4, 2]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#00ffff"
+          },
+          "R4": {
+            "cells": [[4, 4]],
+            "isMain": true,
+            "dirs": ["up", "down", "left", "right"],
+            "color": "#ff00ff"
+          },
+          "F1": {
+            "cells": [[2, 3], [3, 3]],
+            "isMain": false,
+            "dirs": ["left", "right"],
+            "color": "#ff8c00"
+          },
+          "M1": {
+            "cells": [[4, 1]],
+            "isMain": false,
+            "dirs": [],
+            "color": "#ff0000"
+          },
+          "M2": {
+            "cells": [[2, 2]],
+            "isMain": false,
+            "dirs": [],
             "color": "#b20000"
           },
           "M3": {
             "cells": [[1, 4]],
             "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
+            "dirs": [],
             "color": "#7c0000"
           }
         }
