@@ -4,14 +4,15 @@ import { solve } from './solver.js';
 import { applyMove, createState, stateKey } from './state.js';
 
 // test level loading
-const response = await fetch('./js/levels.json');
+const response = await fetch('../levels.json');
 const games = await response.json();
 
 let game;
 game = games.jumpingRabbits;
-game = games.rushHour;
 game = games.dirtyDozen;
-const level = game.levels[0];
+game = games.rushHour;
+
+const level = game.levels[3];
 
 let state = createState(game, level);
 console.log('Initial state:', state);

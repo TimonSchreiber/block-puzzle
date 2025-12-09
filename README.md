@@ -6,7 +6,7 @@ The goal is to create a webpage which allows the user to play a variety of slidi
 
 ## Example
 
-Rush Hour Setup
+Rush Hour Game 1:
 
 ```
 y=5: C3 C3 __ __ __ T4
