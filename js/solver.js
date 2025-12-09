@@ -7,11 +7,14 @@ export function solve(initialState) {
 
   seen.add(stateKey(initialState));
 
+  let iterations = 0;
+
   while (queue.length > 0) {
+    iterations++;
     const { state, moves } = queue.shift();
 
     if (isWon(state)) {
-      console.log(`Solution found!`);
+      console.log(`Solution found in ${iterations} iterations, ${moves.length} moves`);
       return moves;
     }
 
