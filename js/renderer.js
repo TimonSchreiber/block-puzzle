@@ -1,5 +1,16 @@
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
+
+// TODO: add styles and change rectangle/circle/triangle of json to generic?/car/truck/rabbit/fox/mushroom
+// const blockTypeStyles = { rabbit: { shape: '...', pattern: '...', borderRadius: '...' }} // corner-shape?
+
+/**
+ * TODO
+ * @param {SVGSVGElement} svg
+ * @param {*} theme
+ * @param {*} blockColors
+ * @returns
+ */
 export function createRenderer(svg, theme, blockColors) {
   const cellSize = 10;
   const padding = 5;
@@ -8,6 +19,10 @@ export function createRenderer(svg, theme, blockColors) {
   let blockElements = {};
   let isInitialized = false;
 
+  /**
+   * TODO
+   * @param {GameState} state
+   */
   function initialize(state) {
     const boardWidth = state.width * cellSize + 2 * padding;
     const boardHeight = state.height * cellSize + 2 * padding;
@@ -27,6 +42,11 @@ export function createRenderer(svg, theme, blockColors) {
     isInitialized = true;
   }
 
+  /**
+   * TODO
+   * @param {SVGElement} parent
+   * @param {GameState} state
+   */
   function drawBoard(parent, state) {
     const boardBackground = createRect(
       padding, padding,
@@ -55,51 +75,28 @@ export function createRenderer(svg, theme, blockColors) {
     // }
   }
 
+  /**
+   * TODO
+   * @param {SVGElement} parent
+   * @param {GameState} state
+   */
   function drawWinArea(parent, state) {
-    switch (theme.winDisplay) {
-      case 'exit':
-      case 'cells':
-        state.winCondition.forEach(([x, y]) => {
-          const { px, py } = gameToSvg(state, x, y);
-          const rect = createRect(
-            // TODO: subtarcted and added blockmargin temporarily to make it visible: find a better solution!
-            px - blockMargin, py - blockMargin,
-            cellSize + 2 * blockMargin, cellSize + 2 * blockMargin,
-            { fill: theme.winArea, opacity: 0.25, class: 'win-cell' }
-          );
-          parent.append(rect);
-        });
-        break;
-      // case 'exit':
-      // FIXME: check px, py, width, and height
-      //   const exitY = theme.exitRow;
-      //   const { px, py } = gameToSvg(state, 0, exitY);
-      //   // TODO: Add exitCOlumn to the json file?
-      //   // if (theme.exitSides.includes('down')) {
-      //   //   const rect = createRect(
-      //   //     py + 10, // FIXME: ???
-      //   //     padding + state.height * cellSize - 2,
-      //   //     cellSize - 20, // FIXME: ???
-      //   //     padding,
-      //   //     { fill: theme.winArea }
-      //   //   );
-      //   //   parent.append(rect);
-      //   // }
-      //   if (theme.exitSide == 'right') {
-      //     const rect = createRect(
-      //       padding + state.width * cellSize - 2,
-      //       py + 10, // FIXME: ???
-      //       padding,
-      //       cellSize, //- 20, // FIXME: ???
-      //       { fill: theme.winArea }
-      //     );
-      //     parent.append(rect);
-      //   }
-      //   // TODO: add all directions??
-      //   break;
-    }
+    state.winCondition.forEach(([x, y]) => {
+      const { px, py } = gameToSvg(state, x, y);
+      const rect = createRect(
+        // TODO: subtarcted and added blockmargin temporarily to make it visible: find a better solution!
+        px - blockMargin, py - blockMargin,
+        cellSize + 2 * blockMargin, cellSize + 2 * blockMargin,
+        { fill: theme.winArea, opacity: 0.25, class: 'win-cell' }
+      );
+      parent.append(rect);
+    });
   }
 
+  /**
+   * TODO
+   * @param {GameState} state
+   */
   function render(state) {
     if (!isInitialized) {
       initialize(state);
@@ -118,37 +115,50 @@ export function createRenderer(svg, theme, blockColors) {
     });
   }
 
+  /**
+   * TODO:
+   * @param {GameState} state
+   * @param {string} blockId
+   * @param {Block} block
+   * @returns
+   */
   function createBlockElement(state, blockId, block) {
     const group = createGroup(`block-${blockId}`);
     group.setAttribute('data-block-id', blockId); // TODO: add attributes to createGroup function?
 
+    // TODO: check blockTypeSyles[block.blockType]
+
     const color = blockColors[blockId];
     const cellRects = [];
 
-    block.cells.forEach(([x, y]) => {
+    for (const [x, y] of block.cells) {
       const { px, py } = gameToSvg(state, x, y);
 
-      const rect = createRect(
-        // TODO: check coordinates and margin
-        px,// + blockMargin,
-        py,// + blockMargin,
-        cellSize,// - 2 * blockMargin,
-        cellSize,// - 2 * blockMargin,
-        {
-          fill: color,
-          class: 'block-cell',
-        }
-      );
-      cellRects.push(rect);
-      group.append(rect);
-    });
+      // if (style.shape === 'cirlcle') {
+      //   // TODO: add draw circle function back to renderer.js
+      //   // TODO: add more shape types?
+      // } else {
+        const rect = createRect(
+          px, py,
+          cellSize, cellSize,
+          { fill: color, class: 'block-cell' }
+        );
+        cellRects.push(rect);
+        group.append(rect);
+      // }
+    }
 
     return { group, cells: cellRects };
   }
 
+  /**
+   * TODO
+   * @param {GameState} state
+   * @param {string} blockId
+   * @param {Block} block
+   */
   function updateBlockPosition(state, blockId, block) {
     const element = blockElements[blockId];
-
 
     block.cells.forEach(([x, y], index) => {
       const rect = element[index];
@@ -158,6 +168,13 @@ export function createRenderer(svg, theme, blockColors) {
     });
   }
 
+  /**
+   * TODO
+   * @param {GameState} state
+   * @param {number} gameX
+   * @param {number} gameY
+   * @returns
+   */
   function gameToSvg(state, gameX, gameY) {
     return {
       px: padding + gameX * cellSize,
@@ -165,7 +182,13 @@ export function createRenderer(svg, theme, blockColors) {
     };
   }
 
-  // TODO: needed?
+  /**
+   * TODO: needed?
+   * @param {GameState} state
+   * @param {number} svgX
+   * @param {number} svgY
+   * @returns
+   */
   function svgToGame(state, svgX, svgY) {
     return {
       x: Math.floor((svgX - padding) / cellSize),
@@ -173,12 +196,26 @@ export function createRenderer(svg, theme, blockColors) {
     };
   }
 
+  /**
+   * TODO
+   * @param {string} classname
+   * @returns
+   */
   function createGroup(classname) {
     const g = document.createElementNS(SVG_NS, 'g');
     g.setAttribute('class', classname);
     return g;
   }
 
+  /**
+   * TODO
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   * @param {Object} [attr]
+   * @returns
+   */
   function createRect(x, y, width, height, attr = {}) {
     const rect = document.createElementNS(SVG_NS, 'rect');
     rect.setAttribute('x', x);
@@ -190,20 +227,6 @@ export function createRenderer(svg, theme, blockColors) {
       .forEach(([k, v]) => rect.setAttribute(k, v));
 
     return rect;
-  }
-
-  // TODO: no longer needed?
-  function createLine(x1, y1, x2, y2, attr = {}) {
-    const line = document.createElementNS(SVG_NS, 'line');
-    line.setAttribute('x1', x1);
-    line.setAttribute('y1', y1);
-    line.setAttribute('x2', x2);
-    line.setAttribute('y2', y2);
-
-    Object.entries(attr)
-      .forEach(([k, v]) => line.setAttribute(k, v));
-
-    return line;
   }
 
   return { render };

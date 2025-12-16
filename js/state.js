@@ -7,9 +7,9 @@ export const DELTAS = {
 
 /**
  * Create a new game state from a game type definition and level.
- * @param {*} gameType
- * @param {*} level
- * @returns
+ * @param {GameType} gameType The GameType.
+ * @param {Level} level The GameLevel.
+ * @returns {GameState} The initial GameState object.
  */
 export function createState(gameType, level) {
   return {
@@ -20,9 +20,11 @@ export function createState(gameType, level) {
       Object.entries(level.blocks).map(([blockId, block]) => [
         blockId,
         {
-          cells: structuredClone(block.cells),
-          isMain: block.isMain,
-          dirs: block.dirs
+          cells: block.cells.map(([x, y]) => [x, y]),
+          isMain: block.isMain ?? false,
+          dirs: block.dirs ?? gameType.defaults.dirs,
+          moveType: block.moveType ?? gameType.defaults.moveType,
+          blockType: block.blockType ?? gameType.defaults.blockType,
         }
       ])
     )
@@ -30,14 +32,15 @@ export function createState(gameType, level) {
 }
 
 /**
- * Applay a move and return a new state.
- * @param {*} state
- * @param {*} blockId
- * @param {*} direction
- * @returns
+ * Apply a move and return a new state.
+ * @param {GameState} state
+ * @param {Move} move
+ * @returns {GameState} The new State object
  */
-export function applyMove(state, blockId, direction) {
+export function applyMove(state, move) {
+  const { blockId, direction, distance } = move;
   const [dx, dy] = DELTAS[direction];
+
   const block = state.blocks[blockId];
 
   return {
@@ -46,16 +49,19 @@ export function applyMove(state, blockId, direction) {
       ...state.blocks,
       [blockId]: {
         ...block,
-        cells: block.cells.map(([x, y]) => [x + dx, y + dy])
+        cells: block.cells.map(([x, y]) => [
+          x + (distance * dx),
+          y + (distance * dy)
+        ])
       },
     }
   };
 }
 
 /**
- * TODO:
- * @param {*} state
- * @returns
+ * Transforms a GameState object into its string representation.
+ * @param {GameState} state The GameState object to transform.
+ * @returns The string representation of a GameState object.
  */
 export function stateKey(state) {
   return Object.values(state.blocks)
@@ -73,16 +79,11 @@ export function stateKey(state) {
     .join('|');
 }
 
-/** TODO: needed? Move somewhere else? */
-export function reverseDirection(direction) {
-  return {
-    up: 'down',
-    down: 'up',
-    left: 'right',
-    right: 'left'
-  }[direction];
-}
-
+/**
+ * Translates a Cell object into a string.
+ * @param {Cell} cell The x and y coordinates of a cell.
+ * @returns A string representing the Cell object.
+ */
 export function cellToString([x, y]) {
   return `${x},${y}`;
 }

@@ -2,18 +2,26 @@ import { cellToString, DELTAS } from "./state.js";
 
 /**
  * Returns a Set of all the occupied coordinates as Strings.
- * @param {Object} state
+ * @param {GameState} state
  * @returns {Set<string>}
  */
 export function occupiedCells(state) {
-  return new Set(
-    Object.values(state.blocks)
-      .flatMap((block) =>
-        block.cells.map(cellToString)
-      )
-  );
+  const set = new Set();
+  for (const block of Object.values(state.blocks)) {
+    for (const cell of block.cells) {
+      set.add(cellToString(cell));
+    }
+  }
+  return set;
 }
 
+/**
+ * TODO
+ * @param {GameState} state
+ * @param {number} x
+ * @param {number} y
+ * @returns
+ */
 export function inBounds(state, x, y) {
   return x >= 0
       && x < state.width
@@ -21,67 +29,135 @@ export function inBounds(state, x, y) {
       && y < state.height;
 }
 
-// TODO: Important! Add alternative functions for different types of moves (sliding vs jumping vs ...)
-
-
-/**
+/** TODO: now returns the distance instead of a boolean => change function name
  * Check if this block can move in the specified direction.
- * @param {Object} state The state of the board.
+ * @param {GameState} state The state of the board.
  * @param {string} blockId The id of the block to check.
- * @param {string} direction The direction to check.
+ * @param {Direction} direction The direction to check.
  * @returns True if the specified block can move towards the specified
  *          direction, False otherwise.
  */
-export function canMove(state, blockId, direction) {
+export function getMoveDistance(state, blockId, direction) {
+  /** @type {Block} */
   const block = state.blocks[blockId];
-
-  if (!block.dirs.includes(direction)) {
-    return false;
-  }
 
   const [dx, dy] = DELTAS[direction]
   const occupied = occupiedCells(state);
+  // console.log(blockId, ':', occupied)
 
   // Remove this block's cells from the set
-  block.cells.forEach(([x, y]) => {
-    occupied.delete(cellToString([x, y]))
-  });
-
   for (const [x, y] of block.cells) {
-    const newX = x + dx;
-    const newY = y + dy;
-
-    if (!inBounds(state, newX, newY)) {
-      return false;
-    }
-
-    if (occupied.has(cellToString([newX, newY]))) {
-      return false;
-    }
+    occupied.delete(cellToString([x, y]))
   }
 
-  return true;
+
+  switch (block.moveType) {
+    case 'slide':
+      return canSlide(state, block, dx, dy, occupied);
+    case 'jump':
+      return canJump(state, block, dx, dy, occupied);
+    default:
+      console.error(`Invalid moveType ${block.moveType} with block: ${block}`);
+      return 0;
+  }
 }
 
 /**
- * Returns an Array of all moves possible in this board state.
- * @param {Object} state
- * @returns {Array} A List of valid moves
+ * TODO
+ * @param {GameState} state
+ * @param {Block} block
+ * @param {number} dx
+ * @param {number} dy
+ * @param {Set<string>} occupied
+ * @returns
+ */
+function canSlide(state, block, dx, dy, occupied) {
+  let distance = 0;
+
+  while (true) {
+    distance++;
+
+    for (const [x, y] of block.cells) {
+      const newX = x + (dx * distance);
+      const newY = y + (dy * distance);
+
+      if (!inBounds(state, newX, newY)
+        || occupied.has(cellToString([newX, newY]))) {
+        return distance - 1;
+      }
+    }
+  }
+}
+
+/**
+ * TODO
+ * @param {GameState} state
+ * @param {Block} block
+ * @param {number} dx
+ * @param {number} dy
+ * @param {Set<string>} occupied
+ */
+function canJump(state, block, dx, dy, occupied) {
+  if (block.cells.length !== 1) {
+    // TODO: maybe make this more generic so that larger blocks can jump
+    console.warn('Jump only supported for single-cell blocks');
+    return 0;
+  }
+
+  const [x, y] = block.cells[0];
+
+  let foundObstacle = false;
+  let distance = 1;
+  while (true) {
+    const newX = x + (distance * dx);
+    const newY = y + (distance * dy);
+
+    if (!inBounds(state, newX, newY)) {
+      return 0;
+    }
+
+    if (occupied.has(cellToString([newX, newY]))) {
+      foundObstacle = true;
+      distance++;
+    } else {
+      return foundObstacle ? distance : 0;
+    }
+  }
+}
+
+/**
+ * Returns an Array of all possible moves in the specified board state.
+ * @param {GameState} state
+ * @returns {Move[]} A List of valid moves
  */
 export function getValidMoves(state) {
-  const directions = Object.keys(DELTAS);
-  return Object.keys(state.blocks)
-    .flatMap((blockId) =>
-        directions.map((direction) => ({ blockId, direction }))
-    )
-    .filter((obj) =>
-      canMove(state, obj.blockId, obj.direction)
-  );
+  const moves = [];
+
+  for (const [blockId, block] of Object.entries(state.blocks)) {
+    for (const direction of block.dirs) {
+      const maxDistance = getMoveDistance(state, blockId, direction);
+
+      switch (block.moveType) {
+        case 'slide':
+          // All distances from 1 to maxDistance are valid moves
+          for (let d = 1; d <= maxDistance; d++) {
+            moves.push({ blockId, direction, distance: d });
+          }
+          break;
+        case 'jump':
+          // Only one meaningful move
+          moves.push({ blockId, direction, distance: maxDistance });
+          break;
+      }
+    }
+  }
+
+  return moves;
 }
 
 /**
  * Checks if the win condition is met.
- * @param {Object} state The state of the board.
+ * @param {GameState} state The state of the board.
  * @returns True if all winning
  */
 export function isWon(state) {
