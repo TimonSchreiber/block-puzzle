@@ -6,14 +6,16 @@
     "width": 6,
     "height": 5,
     "winCondition": [[4, 0], [5, 0], [4, 1], [5, 1]],
+    "defaults": {
+      "dirs": ["up", "down", "left", "right"],
+      "moveType": "slide",
+      "blockType": "rectangle"
+    },
     "theme": {
       "background": "#2c3e50",
       "board": "#d3d3d3",
       "grid": "#ffffff",
-      "winArea": "rgb(256 0 0 / 0.3)",
-      "winDisplay": "exit",
-      "exitSide": "right",
-      "exitRow": 0
+      "winArea": "rgb(255 0 0 / 0.3)"
     },
     "levels": [
       {
@@ -24,85 +26,58 @@
           "R1": {
             "cells": [[4, 1], [5, 1], [4, 2], [5, 2]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[0, 0], [1, 0], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[0, 1], [0, 2], [1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[0, 3], [0, 4], [1, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[1, 3], [2, 3], [2, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[4, 0], [5, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[3, 3], [3, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[4, 3], [4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[2, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[3, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[2, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[3, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[2, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[3, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -115,85 +90,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[0, 0], [0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[1, 0], [2, 0], [2, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[3, 0], [3, 1], [4, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[4, 0], [5, 0], [5, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[4, 2], [5, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[4, 3], [5, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[4, 4], [5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[2, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[3, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[2, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[3, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[2, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[3, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -206,85 +154,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[0, 0], [0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[1, 0], [2, 0], [2, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[3, 0], [3, 1], [4, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[4, 0], [5, 0], [5, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[0, 2], [1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[2, 2], [3, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[4, 2], [5, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[2, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[3, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[4, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[2, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[3, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -297,85 +218,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[3, 1], [3, 2], [4, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[4, 1], [5, 1], [5, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[3, 3], [3, 4], [4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[4, 3], [5, 3], [5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[0, 0], [1, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[0, 2], [1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[2, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[3, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[2, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[2, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[2, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[2, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -388,85 +282,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[0, 0], [1, 0], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[0, 1], [0, 2], [1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[2, 3], [2, 4], [3, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[3, 3], [4, 3], [4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[2, 0], [3, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[2, 1], [3, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[2, 2], [3, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[4, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[4, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[4, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[5, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[5, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -479,85 +346,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[0, 0], [0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[1, 0], [2, 0], [2, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[3, 0], [3, 1], [4, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[4, 0], [5, 0], [5, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[2, 2], [3, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[2, 3], [3, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[2, 4], [3, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[4, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[5, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[4, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[5, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -570,85 +410,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[2, 0], [3, 0], [3, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[4, 0], [5, 0], [5, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[2, 1], [2, 2], [3, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[4, 1], [4, 2], [5, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[0, 0], [1, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[0, 2], [1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[2, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[3, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[4, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[2, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[3, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -661,85 +474,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[3, 0], [3, 1], [4, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[4, 0], [5, 0], [5, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[3, 3], [3, 4], [4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[4, 3], [5, 3], [5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[0, 0], [1, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[0, 2], [1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[2, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[2, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[2, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[3, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[2, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[2, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -752,85 +538,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[4, 0], [5, 0], [5, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[4, 1], [4, 2], [5, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[3, 3], [3, 4], [4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[4, 3], [5, 3], [5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[2, 0], [3, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[2, 1], [3, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[2, 2], [3, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[0, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[1, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[0, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[0, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -843,85 +602,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[2, 0], [2, 1], [3, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[3, 0], [4, 0], [4, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[2, 2], [3, 2], [3, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[2, 3], [2, 4], [3, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[0, 0], [1, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[0, 2], [1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[4, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[5, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[4, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[5, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -934,85 +666,58 @@
           "R1": {
             "cells": [[2, 1], [3, 1], [2, 2], [3, 2]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[4, 0], [5, 0], [5, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[4, 1], [4, 2], [5, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[3, 3], [3, 4], [4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[4, 3], [5, 3], [5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[0, 0], [1, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[2, 0], [3, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[0, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[0, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[1, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[2, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[2, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -1025,85 +730,58 @@
           "R1": {
             "cells": [[0, 3], [1, 3], [0, 4], [1, 4]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[0, 0], [0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[1, 0], [2, 0], [2, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[4, 2], [5, 2], [5, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[3, 3], [3, 4], [4, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[4, 0], [5, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[4, 1], [5, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[0, 2], [1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[3, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[3, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[2, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[3, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[4, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -1116,85 +794,58 @@
           "R1": {
             "cells": [[2, 1], [3, 1], [2, 2], [3, 2]],
             "isMain": true,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ff0000"
           },
           "Y1": {
             "cells": [[4, 0], [5, 0], [5, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#ffff00"
           },
           "Y2": {
             "cells": [[1, 3], [1, 4], [2, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#b2b200"
           },
           "Y3": {
             "cells": [[2, 3], [3, 3], [3, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#7c7c00"
           },
           "Y4": {
             "cells": [[4, 3], [4, 4], [5, 4]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#565600"
           },
           "B1": {
             "cells": [[2, 0], [3, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000ff"
           },
           "B2": {
             "cells": [[4, 1], [4, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#0000b2"
           },
           "B3": {
             "cells": [[5, 2], [5, 3]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00007c"
           },
           "G1": {
             "cells": [[0, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00ff00"
           },
           "G2": {
             "cells": [[1, 0]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#00b200"
           },
           "G3": {
             "cells": [[0, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#007c00"
           },
           "G4": {
             "cells": [[1, 1]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#005600"
           },
           "G5": {
             "cells": [[0, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#003c00"
           },
           "G6": {
             "cells": [[1, 2]],
-            "isMain": false,
-            "dirs": ["up", "down", "left", "right"],
             "color": "#002a00"
           }
         }
@@ -1208,12 +859,16 @@
     "width": 5,
     "height": 5,
     "winCondition": [[0, 0], [4, 0], [2, 2], [0, 4], [4, 4]],
+    "defaults": {
+      "dirs": [],
+      "moveType": "slide",
+      "blockType": "circle"
+    },
     "theme": {
       "background": "#2d5a27",
       "board": "#8b4513",
       "grid": "#00b200",
-      "winArea": "rgb(205 133 63 / 0.65)",
-      "winDisplay": "cells"
+      "winArea": "rgb(205 133 63 / 0.65)"
     },
     "levels": [
       {
@@ -1225,24 +880,20 @@
             "cells": [[3, 2]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#0000ff"
           },
           "M1": {
             "cells": [[3, 3]],
-            "isMain": false,
-            "dirs": [],
             "color": "#ff0000"
           },
           "M2": {
             "cells": [[1, 4]],
-            "isMain": false,
-            "dirs": [],
             "color": "#b20000"
           },
           "M3": {
             "cells": [[2, 4]],
-            "isMain": false,
-            "dirs": [],
             "color": "#7c0000"
           }
         }
@@ -1256,30 +907,26 @@
             "cells": [[2, 3]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#0000ff"
           },
           "F1": {
             "cells": [[3, 3], [4, 3]],
-            "isMain": false,
             "dirs": ["left", "right"],
+            "blockType": "triangle",
             "color": "#ffc800"
           },
           "M1": {
             "cells": [[2, 2]],
-            "isMain": false,
-            "dirs": [],
             "color": "#ff0000"
           },
           "M2": {
             "cells": [[1, 3]],
-            "isMain": false,
-            "dirs": [],
             "color": "#b20000"
           },
           "M3": {
             "cells": [[3, 4]],
-            "isMain": false,
-            "dirs": [],
             "color": "#7c0000"
           }
         }
@@ -1293,42 +940,40 @@
             "cells": [[0, 1]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#0000ff"
           },
           "R2": {
             "cells": [[3, 1]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#c0c0c0"
           },
           "F1": {
             "cells": [[1, 3], [1, 4]],
-            "isMain": false,
             "dirs": ["up", "down"],
+            "blockType": "triangle",
             "color": "#ffc800"
           },
           "F2": {
             "cells": [[3, 3], [3, 4]],
-            "isMain": false,
             "dirs": ["up", "down"],
+            "blockType": "triangle",
             "color": "#ff8c00"
           },
           "M1": {
             "cells": [[4, 0]],
-            "isMain": false,
-            "dirs": [],
             "color": "#ff0000"
           },
           "M2": {
             "cells": [[4, 2]],
-            "isMain": false,
-            "dirs": [],
             "color": "#b20000"
           },
           "M3": {
             "cells": [[4, 3]],
-            "isMain": false,
-            "dirs": [],
             "color": "#7c0000"
           }
         }
@@ -1342,36 +987,32 @@
             "cells": [[2, 0]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#0000ff"
           },
           "F1": {
             "cells": [[0, 1], [1, 1]],
-            "isMain": false,
             "dirs": ["left", "right"],
+            "blockType": "triangle",
             "color": "#ffc800"
           },
           "F2": {
             "cells": [[1, 3], [1, 4]],
-            "isMain": false,
             "dirs": ["up", "down"],
+            "blockType": "triangle",
             "color": "#ff8c00"
           },
           "M1": {
             "cells": [[0, 0]],
-            "isMain": false,
-            "dirs": [],
             "color": "#ff0000"
           },
           "M2": {
             "cells": [[2, 2]],
-            "isMain": false,
-            "dirs": [],
             "color": "#b20000"
           },
           "M3": {
             "cells": [[0, 3]],
-            "isMain": false,
-            "dirs": [],
             "color": "#7c0000"
           }
         }
@@ -1385,42 +1026,44 @@
             "cells": [[3, 0]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#0000ff"
           },
           "R2": {
             "cells": [[3, 3]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#c0c0c0"
           },
           "R3": {
             "cells": [[4, 4]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#00ffff"
           },
           "F1": {
             "cells": [[1, 1], [1, 2]],
-            "isMain": false,
             "dirs": ["up", "down"],
+            "blockType": "triangle",
             "color": "#ff8c00"
           },
           "F2": {
             "cells": [[0, 3], [1, 3]],
-            "isMain": false,
             "dirs": ["left", "right"],
+            "blockType": "triangle",
             "color": "#ffc800"
           },
           "M1": {
             "cells": [[4, 0]],
-            "isMain": false,
-            "dirs": [],
             "color": "#ff0000"
           },
           "M2": {
             "cells": [[2, 2]],
-            "isMain": false,
-            "dirs": [],
             "color": "#b20000"
           }
         }
@@ -1434,48 +1077,50 @@
             "cells": [[1, 0]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#0000ff"
           },
           "R2": {
             "cells": [[0, 2]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#c0c0c0"
           },
           "R3": {
             "cells": [[4, 2]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#00ffff"
           },
           "R4": {
             "cells": [[4, 4]],
             "isMain": true,
             "dirs": ["up", "down", "left", "right"],
+            "moveType": "jump",
+            "blockType": "triangle",
             "color": "#ff00ff"
           },
           "F1": {
             "cells": [[2, 3], [3, 3]],
-            "isMain": false,
             "dirs": ["left", "right"],
+            "blockType": "triangle",
             "color": "#ff8c00"
           },
           "M1": {
             "cells": [[4, 1]],
-            "isMain": false,
-            "dirs": [],
             "color": "#ff0000"
           },
           "M2": {
             "cells": [[2, 2]],
-            "isMain": false,
-            "dirs": [],
             "color": "#b20000"
           },
           "M3": {
             "cells": [[1, 4]],
-            "isMain": false,
-            "dirs": [],
             "color": "#7c0000"
           }
         }
@@ -1489,14 +1134,16 @@
     "width": 6,
     "height": 6,
     "winCondition": [[4, 3], [5, 3]],
+    "defaults": {
+      "dirs": ["left", "right"],
+      "moveType": "slide",
+      "blockType": "rectangle"
+    },
     "theme": {
       "background": "#34495e",
       "board": "#d3d3d3",
       "grid": "#ffffff",
-      "winArea": "rgb(256 0 0 / 0.25)",
-      "winDisplay": "exit",
-      "exitSide": "right",
-      "exitRow": 3
+      "winArea": "rgb(255 0 0 / 0.25)"
     },
     "levels": [
       {
@@ -1507,48 +1154,37 @@
           "R1": {
             "cells": [[1, 3], [2, 3]],
             "isMain": true,
-            "dirs": ["left", "right"],
             "color": "#ff0000"
           },
           "C1": {
             "cells": [[0, 0], [0, 1]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#000000"
           },
           "C2": {
             "cells": [[4, 1], [5, 1]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#00b2b2"
           },
           "C3": {
             "cells": [[0, 5], [1, 5]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#ffc800"
           },
           "T1": {
             "cells": [[2, 0], [3, 0], [4, 0]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#ffff00"
           },
           "T2": {
             "cells": [[0, 2], [0, 3], [0, 4]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#0000ff"
           },
           "T3": {
             "cells": [[3, 2], [3, 3], [3, 4]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#00ffff"
           },
           "T4": {
             "cells": [[5, 3], [5, 4], [5, 5]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#ff00ff"
           }
@@ -1562,48 +1198,37 @@
           "R1": {
             "cells": [[1, 3], [2, 3]],
             "isMain": true,
-            "dirs": ["left", "right"],
             "color": "#ff0000"
           },
           "C1": {
             "cells": [[5, 0], [5, 1]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#000000"
           },
           "C2": {
             "cells": [[2, 1], [2, 2]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#00b2b2"
           },
           "C3": {
             "cells": [[1, 5], [2, 5]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#ffc800"
           },
           "T1": {
             "cells": [[2, 0], [3, 0], [4, 0]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#ffff00"
           },
           "T2": {
             "cells": [[3, 2], [4, 2], [5, 2]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#0000ff"
           },
           "T3": {
             "cells": [[0, 3], [0, 4], [0, 5]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#00ffff"
           },
           "T4": {
             "cells": [[3, 3], [3, 4], [3, 5]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#ff00ff"
           }
@@ -1617,42 +1242,32 @@
           "R1": {
             "cells": [[1, 3], [2, 3]],
             "isMain": true,
-            "dirs": ["left", "right"],
             "color": "#ff0000"
           },
           "C1": {
             "cells": [[2, 4], [2, 5]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#000000"
           },
           "C2": {
             "cells": [[0, 5], [1, 5]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#00b2b2"
           },
           "T1": {
             "cells": [[3, 0], [4, 0], [5, 0]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#ffff00"
           },
           "T2": {
             "cells": [[0, 2], [0, 3], [0, 4]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#0000ff"
           },
           "T3": {
             "cells": [[1, 2], [2, 2], [3, 2]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#00ffff"
           },
           "T4": {
             "cells": [[3, 3], [3, 4], [3, 5]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#ff00ff"
           }
@@ -1666,67 +1281,50 @@
           "R1": {
             "cells": [[1, 3], [2, 3]],
             "isMain": true,
-            "dirs": ["left", "right"],
             "color": "#ff0000"
           },
           "C1": {
             "cells": [[0, 1], [1, 1]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#000000"
           },
           "C2": {
             "cells": [[0, 2], [0, 3]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#00b2b2"
           },
           "C3": {
             "cells": [[3, 2], [4, 2]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#ffc800"
           },
           "C4": {
             "cells": [[3, 3], [3, 4]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#ff8c00"
           },
           "C5": {
             "cells": [[4, 4], [5, 4]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#00ff00"
           },
           "C6": {
             "cells": [[0, 5], [1, 5]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#00b200"
           },
           "T1": {
             "cells": [[2, 0], [2, 1], [2, 2]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#ffff00"
           },
           "T2": {
             "cells": [[3, 0], [4, 0], [5, 0]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#0000ff"
           },
           "T3": {
             "cells": [[5, 1], [5, 2], [5, 3]],
-            "isMain": false,
             "dirs": ["up", "down"],
             "color": "#00ffff"
           },
           "T4": {
             "cells": [[3, 5], [4, 5], [5, 5]],
-            "isMain": false,
-            "dirs": ["left", "right"],
             "color": "#ff00ff"
           }
         }
