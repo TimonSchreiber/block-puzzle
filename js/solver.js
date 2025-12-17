@@ -2,12 +2,12 @@ import { getValidMoves, isWon } from "./rules.js";
 import { applyMove, stateKey } from "./state.js";
 
 /**
- * TODO
- * @param {GameState} initialState
- * @returns
+ * Solves the block puzzle using A* search.
+ * @param {GameState} initialState The initial state of the board.
+ * @returns {Move[]} The list of moves to solve the puzzle, or an empty list if no solution exists.
  */
 export function solve(initialState) {
-  /** @type {Set<string>} */
+  /** @type {Set<BigInt>} */
   const closed = new Set();
 
   /** @type {{ state: GameState, moves: Move[], g: number, f: number }[]} */
@@ -20,7 +20,6 @@ export function solve(initialState) {
   while (open.length > 0) {
     iterations++;
     const { state, moves } = popMinElement(open);
-    // const { state, moves } = open.shift();
 
     if (isWon(state)) {
       console.log(`Solution found in ${iterations} iterations, ${moves.length} moves`);
@@ -50,9 +49,9 @@ export function solve(initialState) {
 }
 
 /**
- * TODO
- * @param {GameState} state
- * @returns
+ * Calculates the heuristic value for a given state.
+ * @param {GameState} state The state of the board.
+ * @returns {number} The heuristic value.
  */
 function heuristic(state) {
   let minDistance = Number.MAX_SAFE_INTEGER;
@@ -69,14 +68,13 @@ function heuristic(state) {
     }
   }
 
-  // minDistance = Math.abs(mainCells[0][0] - state.winCondition[0][0]) + Math.abs(mainCells[0][1] - state.winCondition[0][1]);
-
   return minDistance;
 }
 
 /**
- * TODO
- * @param {{ state: GameState, moves: Move[], g: number, f: number }[]} open
+ * Pops and returns the element with the minimum 'f' value from the open list.
+ * @param {{ state: GameState, moves: Move[], g: number, f: number }[]} open The open list.
+ * @returns {{ state: GameState, moves: Move[], g: number, f: number }} The element with the minimum 'f' value.
  */
 function popMinElement(open) {
   let min = Number.MAX_SAFE_INTEGER;

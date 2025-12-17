@@ -5,11 +5,11 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 // const blockTypeStyles = { rabbit: { shape: '...', pattern: '...', borderRadius: '...' }} // corner-shape?
 
 /**
- * TODO
- * @param {SVGSVGElement} svg
+ * Creates a renderer for the game.
+ * @param {SVGSVGElement} svg The SVG element to render into.
  * @param {*} theme
  * @param {*} blockColors
- * @returns
+ * @returns {Object} The renderer object with a render method.
  */
 export function createRenderer(svg, theme, blockColors) {
   const cellSize = 10;
@@ -20,8 +20,8 @@ export function createRenderer(svg, theme, blockColors) {
   let isInitialized = false;
 
   /**
-   * TODO
-   * @param {GameState} state
+   * Initializes the renderer.
+   * @param {GameState} state The state of the board.
    */
   function initialize(state) {
     const boardWidth = state.width * cellSize + 2 * padding;
@@ -43,9 +43,9 @@ export function createRenderer(svg, theme, blockColors) {
   }
 
   /**
-   * TODO
-   * @param {SVGElement} parent
-   * @param {GameState} state
+   * Draws the board.
+   * @param {SVGElement} parent The parent SVG element.
+   * @param {GameState} state The state of the board.
    */
   function drawBoard(parent, state) {
     const boardBackground = createRect(
@@ -76,9 +76,9 @@ export function createRenderer(svg, theme, blockColors) {
   }
 
   /**
-   * TODO
-   * @param {SVGElement} parent
-   * @param {GameState} state
+   * Draws the win area.
+   * @param {SVGElement} parent The parent SVG element.
+   * @param {GameState} state The state of the board.
    */
   function drawWinArea(parent, state) {
     state.winCondition.forEach(([x, y]) => {
@@ -94,8 +94,8 @@ export function createRenderer(svg, theme, blockColors) {
   }
 
   /**
-   * TODO
-   * @param {GameState} state
+   * Renders the given game state.
+   * @param {GameState} state The state of the board.
    */
   function render(state) {
     if (!isInitialized) {
@@ -116,11 +116,11 @@ export function createRenderer(svg, theme, blockColors) {
   }
 
   /**
-   * TODO:
-   * @param {GameState} state
-   * @param {string} blockId
-   * @param {Block} block
-   * @returns
+   * Creates a block element.
+   * @param {GameState} state The state of the board.
+   * @param {string} blockId The ID of the block.
+   * @param {Block} block The block object.
+   * @returns {Object} The group element and cell rectangles.
    */
   function createBlockElement(state, blockId, block) {
     const group = createGroup(`block-${blockId}`);
@@ -152,10 +152,10 @@ export function createRenderer(svg, theme, blockColors) {
   }
 
   /**
-   * TODO
-   * @param {GameState} state
-   * @param {string} blockId
-   * @param {Block} block
+   * Updates the position of a block element.
+   * @param {GameState} state The state of the board.
+   * @param {string} blockId The ID of the block.
+   * @param {Block} block The block object.
    */
   function updateBlockPosition(state, blockId, block) {
     const element = blockElements[blockId];
@@ -169,11 +169,11 @@ export function createRenderer(svg, theme, blockColors) {
   }
 
   /**
-   * TODO
-   * @param {GameState} state
-   * @param {number} gameX
-   * @param {number} gameY
-   * @returns
+   * Converts game coordinates to SVG coordinates.
+   * @param {GameState} state The state of the board.
+   * @param {number} gameX The x coordinate in game space.
+   * @param {number} gameY The y coordinate in game space.
+   * @returns {Object} The SVG coordinates {px, py}.
    */
   function gameToSvg(state, gameX, gameY) {
     return {
@@ -197,9 +197,9 @@ export function createRenderer(svg, theme, blockColors) {
   }
 
   /**
-   * TODO
-   * @param {string} classname
-   * @returns
+   * Creates an SVG group element.
+   * @param {string} classname The class name for the group.
+   * @returns {SVGElement} The created group element.
    */
   function createGroup(classname) {
     const g = document.createElementNS(SVG_NS, 'g');
@@ -208,13 +208,13 @@ export function createRenderer(svg, theme, blockColors) {
   }
 
   /**
-   * TODO
-   * @param {number} x
-   * @param {number} y
-   * @param {number} width
-   * @param {number} height
-   * @param {Object} [attr]
-   * @returns
+   * Creates an SVG rectangle element.
+   * @param {number} x The x coordinate.
+   * @param {number} y The y coordinate.
+   * @param {number} width The width.
+   * @param {number} height The height.
+   * @param {Object} [attr] Additional attributes as key-value pairs.
+   * @returns {SVGElement} The created rectangle element.
    */
   function createRect(x, y, width, height, attr = {}) {
     const rect = document.createElementNS(SVG_NS, 'rect');

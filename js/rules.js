@@ -5,7 +5,7 @@ import { cellToString, DELTAS } from "./state.js";
  * @param {GameState} state
  * @returns {Set<string>}
  */
-export function occupiedCells(state) {
+function occupiedCells(state) {
   const set = new Set();
   for (const block of Object.values(state.blocks)) {
     for (const cell of block.cells) {
@@ -16,46 +16,41 @@ export function occupiedCells(state) {
 }
 
 /**
- * TODO
- * @param {GameState} state
- * @param {number} x
- * @param {number} y
- * @returns
- */
-export function inBounds(state, x, y) {
-  return x >= 0
-      && x < state.width
-      && y >= 0
-      && y < state.height;
-}
-
-/** TODO: now returns the distance instead of a boolean => change function name
- * Check if this block can move in the specified direction.
+ * Check if the specified coordinates are within the bounds of the board.
  * @param {GameState} state The state of the board.
- * @param {string} blockId The id of the block to check.
- * @param {Direction} direction The direction to check.
- * @returns True if the specified block can move towards the specified
- *          direction, False otherwise.
+ * @param {number} x The x coordinate.
+ * @param {number} y The y coordinate.
+ * @returns {boolean} True if the coordinates are within bounds.
  */
-export function getMoveDistance(state, blockId, direction) {
+const inBounds = (state, x, y) =>
+  x >= 0 && x < state.width &&
+  y >= 0 && y < state.height;
+
+
+/**
+ * Returns the maximum distance a block can move in a given direction.
+ * @param {GameState} state The state of the board.
+ * @param {string} blockId The ID of the block to move.
+ * @param {Direction} direction The direction to move.
+ * @returns {number} The maximum distance the block can move.
+ */
+function getMoveDistance(state, blockId, direction) {
   /** @type {Block} */
   const block = state.blocks[blockId];
 
   const [dx, dy] = DELTAS[direction]
   const occupied = occupiedCells(state);
-  // console.log(blockId, ':', occupied)
 
   // Remove this block's cells from the set
   for (const [x, y] of block.cells) {
     occupied.delete(cellToString([x, y]))
   }
 
-
   switch (block.moveType) {
     case 'slide':
-      return canSlide(state, block, dx, dy, occupied);
+      return getSlideDistance(state, block, dx, dy, occupied);
     case 'jump':
-      return canJump(state, block, dx, dy, occupied);
+      return getJumpDistance(state, block, dx, dy, occupied);
     default:
       console.error(`Invalid moveType ${block.moveType} with block: ${block}`);
       return 0;
@@ -63,15 +58,15 @@ export function getMoveDistance(state, blockId, direction) {
 }
 
 /**
- * TODO
- * @param {GameState} state
- * @param {Block} block
- * @param {number} dx
- * @param {number} dy
- * @param {Set<string>} occupied
- * @returns
+ * Calculates the maximum slide distance for a block in a given direction.
+ * @param {GameState} state The state of the board.
+ * @param {Block} block The block to move.
+ * @param {number} dx The x delta.
+ * @param {number} dy The y delta.
+ * @param {Set<string>} occupied The set of occupied cells.
+ * @returns {number} The maximum distance the block can slide.
  */
-function canSlide(state, block, dx, dy, occupied) {
+function getSlideDistance(state, block, dx, dy, occupied) {
   let distance = 0;
 
   while (true) {
@@ -90,14 +85,15 @@ function canSlide(state, block, dx, dy, occupied) {
 }
 
 /**
- * TODO
- * @param {GameState} state
- * @param {Block} block
- * @param {number} dx
- * @param {number} dy
- * @param {Set<string>} occupied
+ * Calculates the jump distance for a block in a given direction.
+ * @param {GameState} state The state of the board.
+ * @param {Block} block The block to move.
+ * @param {number} dx The x delta.
+ * @param {number} dy The y delta.
+ * @param {Set<string>} occupied The set of occupied cells.
+ * @returns {number} The jump distance (0 if no jump is possible).
  */
-function canJump(state, block, dx, dy, occupied) {
+function getJumpDistance(state, block, dx, dy, occupied) {
   if (block.cells.length !== 1) {
     // TODO: maybe make this more generic so that larger blocks can jump
     console.warn('Jump only supported for single-cell blocks');
@@ -126,9 +122,9 @@ function canJump(state, block, dx, dy, occupied) {
 }
 
 /**
- * Returns an Array of all possible moves in the specified board state.
- * @param {GameState} state
- * @returns {Move[]} A List of valid moves
+ * Returns a list of all valid moves in the current state.
+ * @param {GameState} state The state of the board.
+ * @returns {Move[]} A list of all valid moves.
  */
 export function getValidMoves(state) {
   const moves = [];
@@ -156,9 +152,9 @@ export function getValidMoves(state) {
 }
 
 /**
- * Checks if the win condition is met.
+ * Checks if the game is won.
  * @param {GameState} state The state of the board.
- * @returns True if all winning
+ * @returns {boolean} True if the game is won.
  */
 export function isWon(state) {
   const mainBlocks = Object.values(state.blocks).filter((block) => block.isMain);
