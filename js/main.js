@@ -1,7 +1,6 @@
 import { createRenderer } from './renderer.js';
-import { getValidMoves, occupiedCells } from './rules.js';
 import { solve } from './solver.js';
-import { applyMove, createState, stateKey } from './state.js';
+import { applyMove, createState, initBlockIndexMap, initZobristHashTable } from './state.js';
 
 /** @typedef {import('./types.js').Cell} Cell */
 /** @typedef {import('./types.js').Direction} Direction */
@@ -17,41 +16,31 @@ import { applyMove, createState, stateKey } from './state.js';
 /** @typedef {import('./types.js').LevelBlock} LevelBlock */
 /** @typedef {import('./types.js').RuleSet} RuleSet */
 
-// test level loading
+// load level
 const response = await fetch('../levels.json');
 const games = await response.json();
 
+/** @type {globalThis.GameType} */
 let game;
-game = games.rushHour;
-game = games.jumpingRabbits;
-game = games.dirtyDozen;
 
-const level = game.levels[1];
-const showSolution = true;
+/** @type {globalThis.Level} */
+let level;
 
-let state = createState(game, level);
+/** @type {globalThis.GameState} */
+let state;
 
-// Test renderer
-const svg = document.querySelector('svg');
-const renderer = createRenderer(
-  svg, game.theme,
-  Object.fromEntries(
-    Object.entries(level.blocks)
-      .map(([blockId, block]) => [blockId, block.color])
-  )
-);
-renderer.render(state);
+let renderer;
 
-if (showSolution) {
-    // Test solve method
+// Solve button
+const buttonSolve = document.querySelector('button');
+buttonSolve.addEventListener('click', (async () => {
+    // Compute and show solution
     console.log('Start solving...');
 
     const start = performance.now();
     const solution = solve(state);
     const end = performance.now();
     console.log('Time:', (end - start).toFixed(3), 'ms');
-
-    // console.log(solution);
 
     for (const move of solution) {
       renderer.render(state);
@@ -64,4 +53,44 @@ if (showSolution) {
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
-}
+  }));
+
+// Level selector
+const levelSelect = document.getElementById('level-select');
+Object.entries(games).forEach(([id, gameType]) => {
+  const optGroup = document.createElement('optgroup');
+  optGroup.label = gameType.name;
+  gameType.levels.forEach((level) => {
+    const option = document.createElement('option');
+    option.value = `${id}:${level.id}`;
+    option.textContent = level.name;
+    optGroup.append(option);
+  });
+  levelSelect.append(optGroup)
+});
+
+levelSelect.addEventListener('change', (event) => {
+  const [selectedGame, selectedLevel] = event.target.value.split(':');
+
+  game = games[selectedGame];
+  level = game.levels[parseInt(selectedLevel)];
+
+  state = createState(game, level);
+
+  initBlockIndexMap(state);
+  initZobristHashTable(state);
+
+  // Create renderer
+  const svg = document.querySelector('svg');
+  svg.innerHTML = '';
+  renderer = createRenderer(
+    svg, game.theme,
+    Object.fromEntries(
+      Object.entries(level.blocks)
+        .map(([blockId, block]) => [blockId, block.color])
+    )
+  );
+  renderer.render(state);
+
+  buttonSolve.disabled = false;
+});
