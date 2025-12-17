@@ -5,6 +5,69 @@ export const DELTAS = {
   right: [ 1,  0],
 };
 
+const U64_CEIL = 2n ** 64n - 1n;
+
+/** @type {Record<string, number>} */
+let blockIndexMap = undefined;
+
+/** @type {BigInt[][][]} */
+let zobristHashTable = undefined;;
+
+/**
+ * Initialize the block index map.
+ * @param {GameState} state The current game state.
+ */
+export function initBlockIndexMap(state) {
+  let blockIndexMap = {};
+  let index = 0;
+  for (const blockId in state.blocks) {
+    blockIndexMap[blockId] = index++;
+  }
+  console.log('Block index map:', blockIndexMap);
+}
+
+/**
+ * Initialize the Zobrist hash table.
+ * @param {GameState} state The current game state.
+ */
+export function initZobristHashTable(state) {
+  zobristHashTable = [];
+  for (let x = 0; x < state.width; x++) {
+    zobristHashTable[x] = [];
+    for (let y = 0; y < state.height; y++) {
+      zobristHashTable[x][y] = [];
+      for (const blockId in blockIndexMap) {
+        const index = blockIndexMap[blockId];
+        zobristHashTable[x][y][index] = BigInt.asUintN(
+          64, BigInt(Math.floor(Math.random() * U64_CEIL))
+        );
+      }
+    }
+  }
+  console.log('Zobrist hash table:', zobristHashTable);
+}
+
+/**
+ * Generates a unique key for the given game state using Zobrist hashing.
+ * @param {GameState} state The state of the board.
+ * @returns {BigInt} The unique key representing the state.
+ */
+export function stateKey(state) {
+  let hash = 0n;
+  for (const blockId in state.blocks) {
+    const block = state.blocks[blockId];
+    // TODO: remove later
+    const idx = blockIndexMap[blockId];
+    if (idx === undefined) {
+      throw new Error(`Block ID ${blockId} not found in blockIndexMap`);
+    }
+    for (const [x, y] of block.cells) {
+      hash ^= zobristHashTable[x][y][blockIndexMap[blockId]];
+    }
+  }
+  return hash;
+}
+
 /**
  * Create a new game state from a game type definition and level.
  * @param {GameType} gameType The GameType.
@@ -56,27 +119,6 @@ export function applyMove(state, move) {
       },
     }
   };
-}
-
-/**
- * Transforms a GameState object into its string representation.
- * @param {GameState} state The GameState object to transform.
- * @returns The string representation of a GameState object.
- */
-export function stateKey(state) {
-  return Object.values(state.blocks)
-    .map((block) => {
-      const sortedCells = [...block.cells]
-        .sort((a, b) => a[0] - b[0] || a[1] - b[1])
-        .map(cellToString)
-        .join(';');
-      // TODO: is it necessary to sort or can I assume the dirs are always the same order?
-      const sortedDirs = block.dirs.map((dir) => dir[0])/* .sort() */.join(',');
-      const isMain = block.isMain ? 1 : '';
-      return `${sortedCells}:${sortedDirs}:${isMain}`;
-    })
-    .sort()
-    .join('|');
 }
 
 /**
