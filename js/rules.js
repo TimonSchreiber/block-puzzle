@@ -1,4 +1,4 @@
-import { boardHeight, boardWidth, winCondition } from "./state.js";
+import { boardHeight, boardWidth, winCondition } from './state.js';
 
 /**
  * Direction deltas.

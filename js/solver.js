@@ -1,5 +1,6 @@
-import { deltas, getValidMoves, isWon } from "./rules.js";
-import { applyMove, stateKey, winCondition } from "./state.js";
+import { extractMin, insert } from './heap.js';
+import { deltas, getValidMoves, isWon } from './rules.js';
+import { applyMove, stateKey, winCondition } from './state.js';
 
 /**
  * Solves the block puzzle using A* search.
@@ -18,10 +19,10 @@ export function solve(initialState) {
   closed.add(initialHash);
 
   let iterations = 0;
-  const maxIterations = 50_000;
+  const maxIterations = 100_000;
 
   while (open.length > 0 && iterations < maxIterations) {
-    const { state, parent, hash, g, f } = popMinElement(open);
+    const { state, parent, hash, g, f } = extractMin(open);
 
     if (isWon(state)) {
       console.log(`Solution found in ${iterations} iterations, ${g} moves`);
@@ -37,7 +38,7 @@ export function solve(initialState) {
         // but technically not correct. Should only close when state is popped
         // from open
         closed.add(newHash);
-        open.push({
+        insert(open, {
           state: newState,
           parent: { state, parent, hash, g, f },
           hash: newHash,
@@ -80,27 +81,6 @@ function heuristic(state) {
   }
 
   return minDistance;
-}
-
-/** TODO: Implement a min-heap for better performance
- * Pops and returns the element with the minimum 'f' value from the open list.
- * @param {SearchNode[]} open The open list.
- * @returns {SearchNode} The element with the minimum 'f' value.
- */
-function popMinElement(open) {
-  let min = Number.MAX_SAFE_INTEGER;
-  let minIndex = -1;
-
-  for (let i = 0; i < open.length; i++) {
-    const { f } = open[i];
-    if (f < min) {
-      min = f;
-      minIndex = i;
-    }
-  }
-
-  const minElements = open.splice(minIndex, 1);
-  return minElements[0];
 }
 
 /**
