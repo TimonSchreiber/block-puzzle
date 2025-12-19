@@ -1,31 +1,47 @@
-import { cellToString, DELTAS } from "./state.js";
+import { boardHeight, boardWidth, winCondition } from "./state.js";
 
 /**
- * Returns a Set of all the occupied coordinates as Strings.
- * @param {GameState} state
- * @returns {Set<string>}
+ * Direction deltas.
  */
-function occupiedCells(state) {
-  const set = new Set();
-  for (const block of Object.values(state.blocks)) {
-    for (const cell of block.cells) {
-      set.add(cellToString(cell));
-    }
-  }
-  return set;
-}
+export const deltas = {
+  up:    [ 0,  1],
+  down:  [ 0, -1],
+  left:  [-1,  0],
+  right: [ 1,  0],
+};
+
+/**
+ * Translates a Cell object into a number.
+ * @param {Cell} cell The x and y coordinates of a cell.
+ * @returns A number representing the Cell object.
+ */
+const cellKey = ([x, y]) => x + y * boardWidth;
 
 /**
  * Check if the specified coordinates are within the bounds of the board.
- * @param {GameState} state The state of the board.
  * @param {number} x The x coordinate.
  * @param {number} y The y coordinate.
  * @returns {boolean} True if the coordinates are within bounds.
  */
-const inBounds = (state, x, y) =>
-  x >= 0 && x < state.width &&
-  y >= 0 && y < state.height;
+const inBounds = (x, y) =>
+  x >= 0 && x < boardWidth &&
+  y >= 0 && y < boardHeight;
 
+/**
+ * Returns a set of occupied cells in the current state.
+ * @param {GameState} state The state of the board.
+ * @returns {Set<number>} Set of occupied cell keys.
+ */
+function occupiedCells(state) {
+  const set = new Set();
+  for (const blockId in state) {
+    const block = state[blockId];
+    for (const cell of block.cells) {
+      set.add(cellKey(cell));
+    }
+  }
+  return set;
+}
 
 /**
  * Returns the maximum distance a block can move in a given direction.
@@ -36,14 +52,14 @@ const inBounds = (state, x, y) =>
  */
 function getMoveDistance(state, blockId, direction) {
   /** @type {Block} */
-  const block = state.blocks[blockId];
+  const block = state[blockId];
 
-  const [dx, dy] = DELTAS[direction]
+  const [dx, dy] = deltas[direction]
   const occupied = occupiedCells(state);
 
   // Remove this block's cells from the set
   for (const [x, y] of block.cells) {
-    occupied.delete(cellToString([x, y]))
+    occupied.delete(cellKey([x, y]))
   }
 
   switch (block.moveType) {
@@ -63,7 +79,7 @@ function getMoveDistance(state, blockId, direction) {
  * @param {Block} block The block to move.
  * @param {number} dx The x delta.
  * @param {number} dy The y delta.
- * @param {Set<string>} occupied The set of occupied cells.
+ * @param {Set<number>} occupied The set of occupied cells.
  * @returns {number} The maximum distance the block can slide.
  */
 function getSlideDistance(state, block, dx, dy, occupied) {
@@ -76,8 +92,8 @@ function getSlideDistance(state, block, dx, dy, occupied) {
       const newX = x + (dx * distance);
       const newY = y + (dy * distance);
 
-      if (!inBounds(state, newX, newY)
-        || occupied.has(cellToString([newX, newY]))) {
+      if (!inBounds(newX, newY)
+        || occupied.has(cellKey([newX, newY]))) {
         return distance - 1;
       }
     }
@@ -90,7 +106,7 @@ function getSlideDistance(state, block, dx, dy, occupied) {
  * @param {Block} block The block to move.
  * @param {number} dx The x delta.
  * @param {number} dy The y delta.
- * @param {Set<string>} occupied The set of occupied cells.
+ * @param {Set<number>} occupied The set of occupied cells.
  * @returns {number} The jump distance (0 if no jump is possible).
  */
 function getJumpDistance(state, block, dx, dy, occupied) {
@@ -108,11 +124,11 @@ function getJumpDistance(state, block, dx, dy, occupied) {
     const newX = x + (distance * dx);
     const newY = y + (distance * dy);
 
-    if (!inBounds(state, newX, newY)) {
+    if (!inBounds(newX, newY)) {
       return 0;
     }
 
-    if (occupied.has(cellToString([newX, newY]))) {
+    if (occupied.has(cellKey([newX, newY]))) {
       foundObstacle = true;
       distance++;
     } else {
@@ -129,7 +145,8 @@ function getJumpDistance(state, block, dx, dy, occupied) {
 export function getValidMoves(state) {
   const moves = [];
 
-  for (const [blockId, block] of Object.entries(state.blocks)) {
+  for (const blockId in state) {
+    const block = state[blockId];
     for (const direction of block.dirs) {
       const maxDistance = getMoveDistance(state, blockId, direction);
 
@@ -142,7 +159,9 @@ export function getValidMoves(state) {
           break;
         case 'jump':
           // Only one meaningful move
-          moves.push({ blockId, direction, distance: maxDistance });
+          if (maxDistance > 0) {
+            moves.push({ blockId, direction, distance: maxDistance });
+          }
           break;
       }
     }
@@ -157,14 +176,22 @@ export function getValidMoves(state) {
  * @returns {boolean} True if the game is won.
  */
 export function isWon(state) {
-  const mainBlocks = Object.values(state.blocks).filter((block) => block.isMain);
+  const mainCells = [];
+  for (const blockId in state) {
+    const block = state[blockId];
+    if (block.isMain) {
+      mainCells.push(...block.cells);
+    }
+  }
 
-  const mainCells = new Set(mainBlocks.flatMap((block) => block.cells).map(cellToString));
-  const winCells = new Set(state.winCondition.map(cellToString));
+  const winCells = new Set();
+  for (const cell of winCondition) {
+    winCells.add(cellKey(cell));
+  }
 
   // All main blocks need to occupy a winCell
   for (const cell of mainCells) {
-    if (!winCells.has(cell)) return false;
+    if (!winCells.has(cellKey(cell))) return false;
   }
 
   return true;

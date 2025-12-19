@@ -1,17 +1,17 @@
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-
 // TODO: add styles and change rectangle/circle/triangle of json to generic?/car/truck/rabbit/fox/mushroom
 // const blockTypeStyles = { rabbit: { shape: '...', pattern: '...', borderRadius: '...' }} // corner-shape?
 
 /**
  * Creates a renderer for the game.
  * @param {SVGSVGElement} svg The SVG element to render into.
- * @param {*} theme
- * @param {*} blockColors
- * @returns {Object} The renderer object with a render method.
+ * @param {Board} board The game board.
+ * @param {Theme} theme The theme object.
+ * @param {Record<string, string>} blockColors A mapping of block IDs to colors.
+ * @returns {Renderer} The renderer object with a render method.
  */
-export function createRenderer(svg, theme, blockColors) {
+export function createRenderer(svg, board, theme, blockColors) {
   const cellSize = 10;
   const padding = 5;
   const blockMargin = 1;
@@ -21,23 +21,22 @@ export function createRenderer(svg, theme, blockColors) {
 
   /**
    * Initializes the renderer.
-   * @param {GameState} state The state of the board.
    */
-  function initialize(state) {
-    const boardWidth = state.width * cellSize + 2 * padding;
-    const boardHeight = state.height * cellSize + 2 * padding;
+  function initialize() {
+    const width = board.width * cellSize + 2 * padding;
+    const height = board.height * cellSize + 2 * padding;
 
-    svg.setAttribute('viewBox', `0 0 ${boardWidth} ${boardHeight}`);
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
     svg.style.background = theme.background;
-    svg.innerHtml = '';
+    svg.innerHTML = '';
 
     const gridLayer = createGroup('grid-layer'); // TODO: needed?
     const winLayer = createGroup('win-layer');
     const blocksLayer = createGroup('blocks-layer');
     svg.append(gridLayer, winLayer, blocksLayer)
 
-    drawBoard(gridLayer, state);
-    drawWinArea(winLayer, state);
+    drawBoard(gridLayer);
+    drawWinArea(winLayer);
 
     isInitialized = true;
   }
@@ -45,30 +44,29 @@ export function createRenderer(svg, theme, blockColors) {
   /**
    * Draws the board.
    * @param {SVGElement} parent The parent SVG element.
-   * @param {GameState} state The state of the board.
    */
-  function drawBoard(parent, state) {
+  function drawBoard(parent) {
     const boardBackground = createRect(
       padding, padding,
-      state.width * cellSize, state.height * cellSize,
+      board.width * cellSize, board.height * cellSize,
       { fill: theme.board }
     );
     parent.append(boardBackground);
 
     // TODO: is the grid needed?
-    // for (let x = 0; x <= state.width; x++) {
+    // for (let x = 0; x <= board.width; x++) {
     //   const line = createLine(
     //     padding + x * cellSize, padding,
-    //     padding + x * cellSize, padding + state.height * cellSize,
+    //     padding + x * cellSize, padding + board.height * cellSize,
     //     { stroke: theme.board, 'stroke-width': 1 }
     //   );
     //   parent.append(line);
     // }
 
-    // for (let y = 0; y <= state.height; y++) {
+    // for (let y = 0; y <= board.height; y++) {
     //   const line = createLine(
     //     padding, padding + y * cellSize,
-    //     padding + state.width * cellSize, padding + y * cellSize,
+    //     padding + board.width * cellSize, padding + y * cellSize,
     //     { stroke: theme.board, 'stroke-width': 1 }
     //   );
     //   parent.append(line);
@@ -78,13 +76,12 @@ export function createRenderer(svg, theme, blockColors) {
   /**
    * Draws the win area.
    * @param {SVGElement} parent The parent SVG element.
-   * @param {GameState} state The state of the board.
    */
-  function drawWinArea(parent, state) {
-    state.winCondition.forEach(([x, y]) => {
-      const { px, py } = gameToSvg(state, x, y);
+  function drawWinArea(parent) {
+    board.winCondition.forEach(([x, y]) => {
+      const { px, py } = gameToSvg(x, y);
       const rect = createRect(
-        // TODO: subtarcted and added blockmargin temporarily to make it visible: find a better solution!
+        // TODO: subtracted and added blockmargin temporarily to make it visible: find a better solution!
         px - blockMargin, py - blockMargin,
         cellSize + 2 * blockMargin, cellSize + 2 * blockMargin,
         { fill: theme.winArea, opacity: 0.25, class: 'win-cell' }
@@ -99,40 +96,40 @@ export function createRenderer(svg, theme, blockColors) {
    */
   function render(state) {
     if (!isInitialized) {
-      initialize(state);
+      initialize();
     }
 
     const blocksLayer = svg.querySelector('.blocks-layer');
 
-    Object.entries(state.blocks).forEach(([blockId, block]) => {
+    for (const blockId in state) {
+      const block = state[blockId];
       if (blockElements[blockId]) {
-        updateBlockPosition(state, blockId, block);
+        updateBlockPosition(blockId, block);
       } else {
-        const { group, cells } = createBlockElement(state, blockId, block);
+        const { group, cells } = createBlockElement(blockId, block);
         blocksLayer.append(group);
         blockElements[blockId] = cells;
       }
-    });
+    }
   }
 
   /**
    * Creates a block element.
-   * @param {GameState} state The state of the board.
    * @param {string} blockId The ID of the block.
    * @param {Block} block The block object.
-   * @returns {Object} The group element and cell rectangles.
+   * @returns {{group: SVGElement, cells: SVGElement[]}} The group element and cell rectangles.
    */
-  function createBlockElement(state, blockId, block) {
+  function createBlockElement(blockId, block) {
     const group = createGroup(`block-${blockId}`);
     group.setAttribute('data-block-id', blockId); // TODO: add attributes to createGroup function?
 
-    // TODO: check blockTypeSyles[block.blockType]
+    // TODO: check blockTypeStyles[blockId] //blockType
 
     const color = blockColors[blockId];
     const cellRects = [];
 
     for (const [x, y] of block.cells) {
-      const { px, py } = gameToSvg(state, x, y);
+      const { px, py } = gameToSvg(x, y);
 
       // if (style.shape === 'cirlcle') {
       //   // TODO: add draw circle function back to renderer.js
@@ -153,16 +150,15 @@ export function createRenderer(svg, theme, blockColors) {
 
   /**
    * Updates the position of a block element.
-   * @param {GameState} state The state of the board.
    * @param {string} blockId The ID of the block.
    * @param {Block} block The block object.
    */
-  function updateBlockPosition(state, blockId, block) {
+  function updateBlockPosition(blockId, block) {
     const element = blockElements[blockId];
 
     block.cells.forEach(([x, y], index) => {
       const rect = element[index];
-      const {px, py } = gameToSvg(state, x, y);
+      const {px, py } = gameToSvg(x, y);
       rect.setAttribute('x', px /* + blockMargin */); // TODO: removed margin
       rect.setAttribute('y', py /* + blockMargin */);
     });
@@ -170,29 +166,27 @@ export function createRenderer(svg, theme, blockColors) {
 
   /**
    * Converts game coordinates to SVG coordinates.
-   * @param {GameState} state The state of the board.
    * @param {number} gameX The x coordinate in game space.
    * @param {number} gameY The y coordinate in game space.
-   * @returns {Object} The SVG coordinates {px, py}.
+   * @returns {{px: number, py: number}} The SVG coordinates {px, py}.
    */
-  function gameToSvg(state, gameX, gameY) {
+  function gameToSvg(gameX, gameY) {
     return {
       px: padding + gameX * cellSize,
-      py: padding + (state.height - 1 - gameY) * cellSize
+      py: padding + (board.height - 1 - gameY) * cellSize
     };
   }
 
   /**
    * TODO: needed?
-   * @param {GameState} state
    * @param {number} svgX
    * @param {number} svgY
-   * @returns
+   * @returns {{x: number, y: number}} The game coordinates {x, y}.
    */
-  function svgToGame(state, svgX, svgY) {
+  function svgToGame(svgX, svgY) {
     return {
       x: Math.floor((svgX - padding) / cellSize),
-      y: state.height - 1 - Math.floor((svgY - padding) / cellSize) // TODO: is this correct?
+      y: board.height - 1 - Math.floor((svgY - padding) / cellSize) // TODO: is this correct?
     };
   }
 
@@ -213,18 +207,19 @@ export function createRenderer(svg, theme, blockColors) {
    * @param {number} y The y coordinate.
    * @param {number} width The width.
    * @param {number} height The height.
-   * @param {Object} [attr] Additional attributes as key-value pairs.
+   * @param {Record<string, unknown>} [attr] Additional attributes as key-value pairs.
    * @returns {SVGElement} The created rectangle element.
    */
   function createRect(x, y, width, height, attr = {}) {
     const rect = document.createElementNS(SVG_NS, 'rect');
-    rect.setAttribute('x', x);
-    rect.setAttribute('y', y);
-    rect.setAttribute('width', width);
-    rect.setAttribute('height', height);
+    rect.setAttribute('x', `${x}`);
+    rect.setAttribute('y', `${y}`);
+    rect.setAttribute('width', `${width}`);
+    rect.setAttribute('height', `${height}`);
 
-    Object.entries(attr)
-      .forEach(([k, v]) => rect.setAttribute(k, v));
+    for (const k in attr) {
+      rect.setAttribute(k, `${attr[k]}`);
+    }
 
     return rect;
   }
