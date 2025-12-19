@@ -21,15 +21,11 @@
  * @property {boolean} isMain - Whether this is a main block
  * @property {Direction[]} dirs - Allowed movement directions
  * @property {MoveType} moveType - Movement type
- * @property {BlockType} blockType - Visual block type
+ * @property {BlockType} blockType - Visual block type // TODO: why store this here?
  */
 
 /**
- * @typedef {Object} GameState
- * @property {number} width - Board width
- * @property {number} height - Board height
- * @property {Cell[]} winCondition - Cells that main blocks must occupy
- * @property {Object<string, Block>} blocks - Map of blockId to Block
+ * @typedef {Object<string, Block>} GameState
  */
 
 /**
@@ -37,6 +33,13 @@
  * @property {string} blockId - Which block to move
  * @property {Direction} direction - Direction to move
  * @property {number} distance - Distance to move
+ */
+
+/**
+ * @typedef {Object} Board
+ * @property {number} width - Board width
+ * @property {number} height - Board height
+ * @property {Cell[]} winCondition - Cells that main blocks must occupy
  */
 
 /**
@@ -84,8 +87,22 @@
  */
 
 /**
+ * @typedef {Object} Renderer
+ * @property {(state: GameState) => void} render - Renders the given game state
+ */
+
+/** TODO: used?
  * @typedef {Object} RuleSet
  * @property {(state: GameState, blockId: string, direction: Direction) => boolean} canMove
  * @property {(state: GameState) => Move[]} getValidMoves
  * @property {(state: GameState, blockId: string, direction: Direction) => number} getMoveDistance
+ */
+
+/**
+ * @typedef {Object} SearchNode
+ * @property {GameState} state - The game state
+ * @property {SearchNode} [parent] - The parent node
+ * @property {BigInt} hash - The Zobrist hash of the state
+ * @property {number} g - Cost from start to this node
+ * @property {number} f - Estimated remaining cost to goal
  */
