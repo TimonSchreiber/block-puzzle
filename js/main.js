@@ -1,90 +1,75 @@
 import { createRenderer } from './renderer.js';
 import { solve } from './solver.js';
-import { applyMove, createState, initBlockIndexMap, initZobristHashTable } from './state.js';
-
-/** @typedef {import('./types.js').Cell} Cell */
-/** @typedef {import('./types.js').Direction} Direction */
-/** @typedef {import('./types.js').MoveType} MoveType */
-/** @typedef {import('./types.js').BlockType} BlockType */
-/** @typedef {import('./types.js').Block} Block */
-/** @typedef {import('./types.js').GameState} GameState */
-/** @typedef {import('./types.js').Move} Move */
-/** @typedef {import('./types.js').Theme} Theme */
-/** @typedef {import('./types.js').Defaults} Defaults */
-/** @typedef {import('./types.js').GameType} GameType */
-/** @typedef {import('./types.js').Level} Level */
-/** @typedef {import('./types.js').LevelBlock} LevelBlock */
-/** @typedef {import('./types.js').RuleSet} RuleSet */
+import { boardHeight, boardWidth, initState, winCondition } from './state.js';
 
 // load level
 const response = await fetch('../levels.json');
 const games = await response.json();
 
-/** @type {globalThis.GameType} */
+/** @type {HTMLButtonElement} */
+const solveButton = document.querySelector('button#solve-button');
+
+/** @type {HTMLSelectElement} */
+const levelSelect = document.querySelector('select#level-select');
+
+/** @type {GameType} */
 let game;
 
-/** @type {globalThis.Level} */
+/** @type {Level} */
 let level;
 
-/** @type {globalThis.GameState} */
+/** @type {GameState} */
 let state;
 
+/** @type {Renderer} */
 let renderer;
 
-// Solve button
-const buttonSolve = document.querySelector('button');
-buttonSolve.addEventListener('click', (async () => {
-    // Compute and show solution
-    console.log('Start solving...');
+/**
+ * Sleeps for the specified time.
+ * @param {number} ms Time to sleep in milliseconds.
+ */
+const sleep = async (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-    const start = performance.now();
-    const solution = solve(state);
-    const end = performance.now();
-    console.log('Time:', (end - start).toFixed(3), 'ms');
+/** Populates the level select element with available games and levels. */
+const populateSelectElement = () => {
+  Object.entries(games).forEach(([id, gameType]) => {
+    const optGroup = document.createElement('optgroup');
+    optGroup.label = gameType.name;
 
-    for (const move of solution) {
-      renderer.render(state);
-      state = applyMove(state, move);
-      await sleep(300);
-    }
+    /** @param {Level} level */
+    const addLevel = (level) => {
+      const option = document.createElement('option');
+      option.value = `${id}:${level.id}`;
+      option.textContent = level.name;
+      optGroup.append(option);
+    };
 
-    renderer.render(state);
-
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-  }));
-
-// Level selector
-const levelSelect = document.getElementById('level-select');
-Object.entries(games).forEach(([id, gameType]) => {
-  const optGroup = document.createElement('optgroup');
-  optGroup.label = gameType.name;
-  gameType.levels.forEach((level) => {
-    const option = document.createElement('option');
-    option.value = `${id}:${level.id}`;
-    option.textContent = level.name;
-    optGroup.append(option);
+    gameType.levels.forEach(addLevel);
+    levelSelect.append(optGroup);
   });
-  levelSelect.append(optGroup)
-});
+};
 
-levelSelect.addEventListener('change', (event) => {
-  const [selectedGame, selectedLevel] = event.target.value.split(':');
+/** Handles the change event for the level select element. */
+const handleLevelSelectChange = () => {
+  if (!levelSelect.value) {
+    solveButton.disabled = true;
+    return;
+  }
+
+  const [selectedGame, selectedLevel] = levelSelect.value.split(':');
 
   game = games[selectedGame];
   level = game.levels[parseInt(selectedLevel)];
 
-  state = createState(game, level);
-
-  initBlockIndexMap(state);
-  initZobristHashTable(state);
+  state = initState(game, level);
 
   // Create renderer
   const svg = document.querySelector('svg');
   svg.innerHTML = '';
   renderer = createRenderer(
-    svg, game.theme,
+    svg,
+    { width: boardWidth, height: boardHeight, winCondition },
+    game.theme,
     Object.fromEntries(
       Object.entries(level.blocks)
         .map(([blockId, block]) => [blockId, block.color])
@@ -92,5 +77,27 @@ levelSelect.addEventListener('change', (event) => {
   );
   renderer.render(state);
 
-  buttonSolve.disabled = false;
-});
+  solveButton.disabled = false;
+};
+
+/** Handles solving the current game level. */
+const solveGame = async () => {
+  // Compute and show solution
+  console.log(`Start solving ${game.name} - ${level.name} ...`);
+
+  const start = performance.now();
+  const solution = solve(state);
+  const end = performance.now();
+  console.log(`Time: ${(end - start).toFixed(3)} ms`);
+
+  for (const gameState of solution) {
+    renderer.render(gameState);
+    await sleep(300);
+  }
+};
+
+// Event listeners
+solveButton.addEventListener('click', solveGame);
+
+populateSelectElement();
+levelSelect.addEventListener('change', handleLevelSelectChange);
