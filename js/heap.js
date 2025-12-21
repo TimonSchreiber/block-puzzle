@@ -79,10 +79,9 @@ export function extractMin(open) {
     const rightIndex = right(index);
 
     // Find the smaller child
-    let smallerChild = leftIndex;
-    if (rightIndex < open.length && compare(open[rightIndex], open[leftIndex]) < 0) {
-      smallerChild = rightIndex;
-    }
+    let smallerChild = (rightIndex < open.length && compare(open[rightIndex], open[leftIndex]) < 0)
+      ? rightIndex
+      : leftIndex;
 
     // Swap with the smaller child if necessary
     if (compare(open[index], open[smallerChild]) <= 0) {

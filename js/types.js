@@ -39,7 +39,7 @@
  * @typedef {Object} Board
  * @property {number} width - Board width
  * @property {number} height - Board height
- * @property {Cell[]} winCondition - Cells that main blocks must occupy
+ * @property {Set<Cell>} winCondition - Cells that main blocks must occupy
  */
 
 /**
@@ -101,7 +101,7 @@
 /**
  * @typedef {Object} SearchNode
  * @property {GameState} state - The game state
- * @property {SearchNode} [parent] - The parent node
+ * @property {?SearchNode} parent - The parent node
  * @property {BigInt} hash - The Zobrist hash of the state
  * @property {number} g - Cost from start to this node
  * @property {number} f - Estimated remaining cost to goal

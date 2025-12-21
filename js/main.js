@@ -1,5 +1,5 @@
 import { createRenderer } from './renderer.js';
-import { solve } from './solver.js';
+import { solveAStar } from './solver.js';
 import { boardHeight, boardWidth, initState, winCondition } from './state.js';
 
 // load level
@@ -81,12 +81,12 @@ const handleLevelSelectChange = () => {
 };
 
 /** Handles solving the current game level. */
-const solveGame = async () => {
+const solveLevel = async () => {
   // Compute and show solution
   console.log(`Start solving ${game.name} - ${level.name} ...`);
 
   const start = performance.now();
-  const solution = solve(state);
+  const solution = solveAStar(state);
   const end = performance.now();
   console.log(`Time: ${(end - start).toFixed(3)} ms`);
 
@@ -97,7 +97,7 @@ const solveGame = async () => {
 };
 
 // Event listeners
-solveButton.addEventListener('click', solveGame);
+solveButton.addEventListener('click', solveLevel);
 
 populateSelectElement();
 levelSelect.addEventListener('change', handleLevelSelectChange);
