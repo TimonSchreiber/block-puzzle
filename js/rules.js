@@ -1,4 +1,4 @@
-import { boardHeight, boardWidth, winCondition } from './state.js';
+import { boardHeight, boardWidth, cellKey, isWinCell } from './state.js';
 
 /**
  * Direction deltas.
@@ -9,13 +9,6 @@ export const deltas = {
   left:  [-1,  0],
   right: [ 1,  0],
 };
-
-/**
- * Translates a Cell object into a number.
- * @param {Cell} cell The x and y coordinates of a cell.
- * @returns A number representing the Cell object.
- */
-const cellKey = ([x, y]) => x + y * boardWidth;
 
 /**
  * Check if the specified coordinates are within the bounds of the board.
@@ -64,9 +57,9 @@ function getMoveDistance(state, blockId, direction) {
 
   switch (block.moveType) {
     case 'slide':
-      return getSlideDistance(state, block, dx, dy, occupied);
+      return getSlideDistance(block, dx, dy, occupied);
     case 'jump':
-      return getJumpDistance(state, block, dx, dy, occupied);
+      return getJumpDistance(block, dx, dy, occupied);
     default:
       console.error(`Invalid moveType ${block.moveType} with block: ${block}`);
       return 0;
@@ -75,14 +68,13 @@ function getMoveDistance(state, blockId, direction) {
 
 /**
  * Calculates the maximum slide distance for a block in a given direction.
- * @param {GameState} state The state of the board.
  * @param {Block} block The block to move.
  * @param {number} dx The x delta.
  * @param {number} dy The y delta.
  * @param {Set<number>} occupied The set of occupied cells.
  * @returns {number} The maximum distance the block can slide.
  */
-function getSlideDistance(state, block, dx, dy, occupied) {
+function getSlideDistance(block, dx, dy, occupied) {
   let distance = 0;
 
   while (true) {
@@ -102,14 +94,13 @@ function getSlideDistance(state, block, dx, dy, occupied) {
 
 /**
  * Calculates the jump distance for a block in a given direction.
- * @param {GameState} state The state of the board.
  * @param {Block} block The block to move.
  * @param {number} dx The x delta.
  * @param {number} dy The y delta.
  * @param {Set<number>} occupied The set of occupied cells.
  * @returns {number} The jump distance (0 if no jump is possible).
  */
-function getJumpDistance(state, block, dx, dy, occupied) {
+function getJumpDistance(block, dx, dy, occupied) {
   if (block.cells.length !== 1) {
     // TODO: maybe make this more generic so that larger blocks can jump
     console.warn('Jump only supported for single-cell blocks');
@@ -176,22 +167,13 @@ export function getValidMoves(state) {
  * @returns {boolean} True if the game is won.
  */
 export function isWon(state) {
-  const mainCells = [];
+  // All main blocks need to occupy a winCell
   for (const blockId in state) {
     const block = state[blockId];
-    if (block.isMain) {
-      mainCells.push(...block.cells);
+    if (!block.isMain) continue;
+    for (const [x, y] of block.cells) {
+      if (!isWinCell([x, y])) return false;
     }
-  }
-
-  const winCells = new Set();
-  for (const cell of winCondition) {
-    winCells.add(cellKey(cell));
-  }
-
-  // All main blocks need to occupy a winCell
-  for (const cell of mainCells) {
-    if (!winCells.has(cellKey(cell))) return false;
   }
 
   return true;
