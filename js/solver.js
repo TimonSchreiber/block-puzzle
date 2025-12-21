@@ -7,50 +7,62 @@ import { applyMove, stateKey, winCondition } from './state.js';
  * @param {GameState} initialState The initial state of the board.
  * @returns {GameState[]} The list of states from the initial state to the goal state, or null if no solution is found.
  */
-export function solve(initialState) {
+export function solveAStar(initialState) {
   const initialHash = stateKey(initialState);
 
   /** @type {Set<BigInt>} */
-  const closed = new Set();
+  // const closed = new Set(/* [initialHash] */);
+
+
+  /** @type {Map<BigInt, number>} */
+  const gScore = new Map([[initialHash, 0]]);
 
   /** @type {SearchNode[]} */
   const open = [{ state: initialState, parent: null, hash: initialHash, g: 0, f: 0 }];
 
-  closed.add(initialHash);
-
   let iterations = 0;
-  const maxIterations = 100_000;
 
-  while (open.length > 0 && iterations < maxIterations) {
+  while (open.length > 0) {
     const { state, parent, hash, g, f } = extractMin(open);
+
+    if (g !== gScore.get(hash)) {
+      continue;
+    }
+
+    iterations++;
+
+    // TODO: remove debug logging
+    if (iterations % 10_000 === 0) {
+      console.log(`Iteration ${iterations}: open=${open.length}, closed=${gScore.size}, g=${g}, f=${f}, hash=${hash}`);
+      console.assert(hash !== (parent?.hash ?? 0n), 'State equals parent!');
+    }
 
     if (isWon(state)) {
       console.log(`Solution found in ${iterations} iterations, ${g} moves`);
       return reconstructPath({ state, parent, hash, g, f });
     }
 
-    for (const {blockId, direction, distance} of getValidMoves(state)) {
+    for (const { blockId, direction, distance } of getValidMoves(state)) {
       const [dx, dy] = deltas[direction];
       const { newState, newHash } = applyMove(hash, state, blockId, dx, dy, distance);
 
-      if (!closed.has(newHash)) {
-        // Note: state marked as closed because all moves have the same cost,
-        // but technically not correct. Should only close when state is popped
-        // from open
-        closed.add(newHash);
-        insert(open, {
-          state: newState,
-          parent: { state, parent, hash, g, f },
-          hash: newHash,
-          g: g + 1,
-          f: g + 1 + heuristic(newState),
-        });
+      const tentativeG = g + 1;
+      const bestKnownG = gScore.get(newHash) ?? Number.MAX_SAFE_INTEGER;
+      if (tentativeG >= bestKnownG) {
+        continue;
       }
-    }
-    iterations++;
+      gScore.set(newHash, tentativeG);
+      insert(open, {
+        state: newState,
+        parent: { state, parent, hash, g, f },
+        hash: newHash,
+        g: g + 1,
+        f: g + 1 + heuristic(newState),
+      });
+      }
   }
 
-  console.log(`No Solution found in ${iterations} iterations!`);
+  console.log(`No Solution found in ${iterations} iterations!, ${gScore.size} states explored`);
   return [];
 }
 
@@ -60,27 +72,21 @@ export function solve(initialState) {
  * @returns {number} The heuristic value.
  */
 function heuristic(state) {
-  let minDistance = Number.MAX_SAFE_INTEGER;
-
-  const mainCells = [];
+  let totalDistance = 0;
 
   for (const blockId in state) {
     const block = state[blockId];
-    if (block.isMain) {
-      mainCells.push(...block.cells);
-    }
-  }
+    if (!block.isMain) continue;
 
-  for (const mainCell of mainCells) {
-    for (const winCell of winCondition) {
-      const distance = Math.abs(mainCell[0] - winCell[0]) + Math.abs(mainCell[1] - winCell[1]);
-      if (distance < minDistance) {
-        minDistance = distance;
+    for (const [bx, by] of block.cells) {
+      let minDistance = Number.MAX_SAFE_INTEGER;
+      for (const [wx, wy] of winCondition) {
+        minDistance = Math.min(minDistance, Math.abs(bx - wx) + Math.abs(by - wy));
       }
+      totalDistance += minDistance;
     }
   }
-
-  return minDistance;
+  return totalDistance;
 }
 
 /**
