@@ -1,22 +1,52 @@
+/** @type {number} */
+export let boardWidth = undefined;
+
+/** @type {number} */
+export let boardHeight = undefined;
+
+/** @type {Set<Cell>} */
+export let winCondition = undefined;
+
+/** @type {Set<number>} */
+export let winCellKeys = undefined;
+
 /** @type {Record<string, number>} */
-let blockIndexMap = undefined;
+let shapeIndexMap = undefined;
 
 /** @type {BigInt[][][]} */
 let zobristHashTable = undefined;
 
-export let boardWidth = undefined;
-export let boardHeight = undefined;
-export let winCondition = undefined;
+/**
+ * Generates a shape signature for a block.
+ * @param {Block} block The block to generate the signature for.
+ * @returns {string} The shape signature of the block.
+ */
+function getShapeSignature(block) {
+  // Normalize cells relative to top-left
+  const sorted = [...block.cells].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const [minX, minY] = sorted[0];
+  const normalized = sorted.map(([x, y]) => `${x - minX},${y - minY}`).join(';');
+
+  // Include movement properties that affect game logic
+  const dirs = [...block.dirs].sort().join(',');
+  return `${normalized}|${block.moveType}|${dirs}|${block.isMain}`;
+}
 
 /**
- * Initialize the block index map.
+ * Initialize the shape index map.
  * @param {GameState} state The current game state.
  */
-function initBlockIndexMap(state) {
-  blockIndexMap = {};
-  let index = 0;
+function initShapeIndexMap(state) {
+  shapeIndexMap = {};
+  const shapeToIndex = {};
+  let nextIndex = 0;
+
   for (const blockId in state) {
-    blockIndexMap[blockId] = index++;
+    const shape = getShapeSignature(state[blockId]);
+    if (!(shape in shapeToIndex)) {
+      shapeToIndex[shape] = nextIndex++;
+    }
+    shapeIndexMap[blockId] = shapeToIndex[shape];
   }
 }
 
@@ -24,15 +54,16 @@ function initBlockIndexMap(state) {
  * Initialize the Zobrist hash table.
  */
 function initZobristHashTable() {
+  const numShapes = new Set(Object.values(shapeIndexMap)).size;
   zobristHashTable = [];
   for (let x = 0; x < boardWidth; x++) {
     zobristHashTable[x] = [];
     for (let y = 0; y < boardHeight; y++) {
       zobristHashTable[x][y] = [];
-      for (const blockId in blockIndexMap) {
+      for (let s = 0; s < numShapes; s++) {
         const high = BigInt(Math.floor(Math.random() * 2**32));
         const low = BigInt(Math.floor(Math.random() * 2**32));
-        zobristHashTable[x][y][blockIndexMap[blockId]] = (high << 32n) ^ low;
+        zobristHashTable[x][y][s] = (high << 32n) ^ low;
       }
     }
   }
@@ -48,11 +79,25 @@ export function stateKey(state) {
   for (const blockId in state) {
     const block = state[blockId];
     for (const [x, y] of block.cells) {
-      hash ^= zobristHashTable[x][y][blockIndexMap[blockId]];
+      hash ^= zobristHashTable[x][y][shapeIndexMap[blockId]];
     }
   }
   return hash;
 }
+
+/**
+ * Translates a Cell object into a number.
+ * @param {Cell} cell The x and y coordinates of a cell.
+ * @returns A number representing the Cell object.
+ */
+export const cellKey = ([x, y]) => x + y * boardWidth;
+
+/**
+ * Checks if the given cell is a win cell.
+ * @param {Cell} cell The x and y coordinates of a cell.
+ * @returns {boolean} True if the cell is a win cell.
+ */
+export const isWinCell = ([x, y]) => winCellKeys.has(cellKey([x, y]));
 
 /**
  * Initialize the game variables and return the initial state.
@@ -77,9 +122,10 @@ export function initState(gameType, level) {
 
   boardWidth = gameType.width;
   boardHeight = gameType.height;
-  winCondition = gameType.winCondition;
+  winCondition = new Set(gameType.winCondition);
+  winCellKeys = new Set(gameType.winCondition.map(cellKey));
 
-  initBlockIndexMap(state);
+  initShapeIndexMap(state);
   initZobristHashTable();
 
   return state;
@@ -100,7 +146,7 @@ export function applyMove(hash, state, blockId, dx, dy, distance) {
 
   // Remove old position from hash
   for (const [x, y] of state[blockId].cells) {
-    newHash ^= zobristHashTable[x][y][blockIndexMap[blockId]];
+    newHash ^= zobristHashTable[x][y][shapeIndexMap[blockId]];
   }
 
   /** @type {GameState} */
@@ -123,7 +169,7 @@ export function applyMove(hash, state, blockId, dx, dy, distance) {
   // Add new position to hash
   const newBlock = newState[blockId];
   for (const [x, y] of newBlock.cells) {
-    newHash ^= zobristHashTable[x][y][blockIndexMap[blockId]];
+    newHash ^= zobristHashTable[x][y][shapeIndexMap[blockId]];
   }
 
   return { newState, newHash };
